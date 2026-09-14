@@ -1,0 +1,171 @@
+<nav class="navbar">
+  <div class="btn-navbar">
+      <button class="btn btn-dark rounded-pill px-3" routerLink="/home" > Volver </button> 
+  </div>
+</nav>
+<div class="register-container">
+  <div class="register-card">
+    <header class="register-header">
+      <h2>Crear Cuenta</h2>
+      <p>Registrate y obtené tu cupón de bienvenida para tu primera compra</p>
+    </header>
+
+    <form [formGroup]="registerForm" (ngSubmit)="guardar()" novalidate>
+      
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nombre</label>
+          <input
+            type="text"
+            formControlName="nombre"
+            placeholder="Juan"
+            [class.input-error]="esCampoInvalido('nombre')"
+          />
+          @if (esCampoInvalido('nombre')) {
+            <span class="error-text">El nombre es obligatorio.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Apellido</label>
+          <input
+            type="text"
+            formControlName="apellido"
+            placeholder="Pérez"
+            [class.input-error]="esCampoInvalido('apellido')"
+          />
+          @if (esCampoInvalido('apellido')) {
+            <span class="error-text">El apellido es obligatorio.</span>
+          }
+        </div>
+      </div>
+
+      
+      <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input          
+          type="email"
+          formControlName="email"
+          placeholder="juan.perez@ejemplo.com"
+          [class.input-error]="esCampoInvalido('email')"
+        />
+        @if (esCampoInvalido('email')) {
+          <span class="error-text">
+            @if (this.registerForm.get('email')?.hasError('required')) { El correo es obligatorio. }
+            @if (this.registerForm.get('email')?.hasError('email')) { Ingresá un correo válido. }
+          </span>
+        }
+      </div>
+
+      
+      <div class="form-row">
+        <div class="form-group">
+          <label>Contraseña</label>
+          <div class="password-wrapper">
+            <input       
+              /* Cambia el tipo de texto a password */
+              [type]="mostrarClave ? 'text' : 'password'" 
+              formControlName="clave"
+              placeholder="••••••••"
+              [class.input-error]="esCampoInvalido('clave')"
+            />
+            <button
+              type="button"
+              class="toggle-password"
+              (click)="cambiarVisibilidadClave()"     
+            >
+              {{ mostrarClave ? 'Ocultar' : 'Ver' }}
+            </button>
+          </div>
+          @if (esCampoInvalido('clave')) {
+            <span class="error-text">Mínimo 6 caracteres.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label >Confirmar Contraseña</label>
+          <input
+            [type]="mostrarClave ? 'text' : 'password'"
+            formControlName="claveAConfirmar"
+            placeholder="••••••••"
+            [class.input-error]="esCampoInvalido('claveAConfirmar') || confirmarClaves('clave','claveAConfirmar')"
+          />
+          @if (confirmarClaves('clave','claveAConfirmar')) {
+            <span class="error-text">Las claves tienen que coincidir.</span>
+          }
+          @else {
+            <span></span>
+          }
+        </div>
+      </div>
+
+     
+      <!-- <div class="form-row">
+        <div class="form-group">
+          <label>Fecha de Nacimiento</label>
+          <input           
+            type="date"
+            formControlName="fechaDeNacimiento"
+            [class.input-error]="controles['fechaDeNacimiento'].invalid && controles['fechaDeNacimiento'].touched"
+          />
+          @if (controles['fechaDeNacimiento'].invalid && controles['fechaDeNacimiento'].touched) {
+            <span class="error-text">Indicá tu fecha de nacimiento.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Tipo de Sangre</label>
+          <select
+            formControlName="tipoDeSangre"
+            [class.input-error]="controles['tipoDeSangre'].invalid && controles['tipoDeSangre'].touched"
+          >
+            <option value="" disabled selected>Seleccionar...</option>
+            @for (tipo of tiposDeSangre; track tipo) {
+              <option [value]="tipo">{{ tipo }}</option>
+            }
+          </select>
+          @if (controles['tipoDeSangre'].invalid && controles['tipoDeSangre'].touched) {
+            <span class="error-text">Seleccioná un tipo.</span>
+          }
+        </div>
+      </div>
+
+     
+      <div class="form-row">
+        <div class="form-group">
+          <label>Color de Ojos</label>
+          <select
+            formControlName="colorDeOjos"
+            [class.input-error]="controles['colorDeOjos'].invalid && controles['colorDeOjos'].touched"
+          >
+            <option value="" disabled selected>Seleccionar...</option>
+            @for (color of coloresDeOjo; track color) {
+              <option [value]="color">{{ color }}</option>
+            }
+          </select>
+          @if (controles['colorDeOjos'].invalid && controles['colorDeOjos'].touched) {
+            <span class="error-text">Seleccioná un color.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label>Días de Vacaciones / Año</label>
+          <input
+            type="number"
+            formControlName="diasDeVacaciones"
+            [class.input-error]="controles['diasDeVacaciones'].invalid && controles['diasDeVacaciones'].touched"
+          />
+        </div>
+      </div> -->
+
+      <button type="submit" class="btn-submit"> 
+        <span>Registrarme</span>
+      </button>
+
+      <div class="login-footer">
+        <p>¿Ya tenés una cuenta? <a routerLink="/login">Iniciá sesión aquí</a></p>
+      </div>
+    </form>
+  </div>
+</div>

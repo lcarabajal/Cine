@@ -1,0 +1,67 @@
+<nav class="navbar">
+    <div class="btn-navbar">
+        <button class="btn btn-dark rounded-pill px-3" routerLink="/home" > Volver </button> 
+    </div>
+</nav>
+<div class="login-container">
+  <div class="login-card">
+    <header class="login-header">
+      <h2>Iniciar Sesión</h2>
+      <p>Ingresa a tu cuenta</p>
+    </header>
+
+    <form [formGroup]="loginForm" (ngSubmit)="guardar()">
+      <div class="form-group">
+        <label>Correo Electrónico</label>
+        <input       
+          type="email"
+          formControlName="email"
+          placeholder="ejemplo@correo.com"
+          [class.input-error]="esCampoInvalido('email')"
+        />
+        
+        @if (esCampoInvalido('clave')) {
+          <span class="error-text">
+            @if (this.loginForm.get('email')?.hasError('required')) { El correo es obligatorio. }
+            @if (this.loginForm.get('email')?.hasError('email')) { Ingresa un formato de correo válido. }
+          </span>
+        }
+      </div>
+
+      <div class="form-group">
+        <label>Contraseña</label>
+        <div class="password-wrapper">
+          <input
+            /* si es true -> es texto y si es false -> es password el tipo */
+            [type]="mostrarClave ? 'text' : 'password'"
+            formControlName="clave"
+            placeholder="••••••••"
+            [class.input-error]="esCampoInvalido('clave')"
+          />
+          <button 
+            type="button" 
+            class="toggle-password" 
+            (click)="cambiarVisibilidadClave()"
+          >
+            {{ mostrarClave ? 'Ocultar' : 'Ver' }}
+          </button>
+        </div>
+
+        @if (esCampoInvalido('clave')) {
+          <span class="error-text">
+            @if (this.loginForm.get('clave')?.hasError('required')) { La contraseña es obligatoria. }
+            @if (this.loginForm.get('clave')?.hasError('length')) { Debe tener al menos 6 caracteres. }
+          </span>
+        }
+      </div>
+
+      <button
+      type="submit"
+      class="btn btn-primary rounded-pill px-3"
+      >
+        <span>Entrar</span>
+      </button>
+     
+    </form>
+  </div>
+</div>

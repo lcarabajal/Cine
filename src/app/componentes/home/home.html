@@ -1,0 +1,18 @@
+<nav class="navbar">
+    <div class="btn-navbar">
+        @if(this.currentUser()!= null){
+            <button (click)="cerrarSesion()"class="btn btn-dark rounded-pill px-3" >Cerrar Sesión</button>
+        }
+        @else{
+            
+            <button class="btn btn-dark rounded-pill px-3" routerLink="/login" routerLinkActive="active">Iniciar Sesión</button> 
+
+            <button class="btn btn-dark rounded-pill px-3" routerLink="/register" routerLinkActive="active">Registrarse</button> 
+        }
+        
+    </div>
+</nav>
+
+<div class="register-container">
+    Bienvenido Al Cine Joits! 
+</div>
