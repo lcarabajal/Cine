@@ -1,0 +1,89 @@
+<div class="sala-wrapper">
+  
+  <!-- Referencia de la pantalla -->
+  <div class="pantalla-container">
+    <div class="pantalla-curva"></div>
+    <span class="pantalla-texto">PANTALLA</span>
+  </div>
+
+  <!-- Contenedor scrollable por si la pantalla es chica -->
+  <div class="asientos-container">
+    @for (fila of filas(); track fila.letra) {
+      <div class="fila" [ngClass]="'tema-' + fila.tipoColor">
+        
+        <!-- Etiqueta izquierda de la fila (A, B, C...) -->
+        <div class="etiqueta-fila">{{ fila.letra }}</div>
+
+        <!-- Columna Izquierda (2) -->
+        <div class="bloque-asientos">
+            
+          @for (asiento of fila.bloqueIzq; track asiento.id) {
+            <button 
+              class="asiento" 
+              [class.seleccionado]="asiento.seleccionado"
+              [class.ocupado]="asiento.ocupado"
+              (click)="toggleSeleccion(asiento)"
+              [title]="'Asiento ' + asiento.id">
+              {{ asiento.numero }}
+            </button>
+          }
+        </div>
+
+        <!-- Pasillo Izquierdo -->
+        <div class="pasillo"></div>
+
+        <!-- Columna Central (10) -->
+        <div class="bloque-asientos">
+          @for (asiento of fila.bloqueCentro; track asiento.id) {
+            <button 
+              class="asiento" 
+              [class.seleccionado]="asiento.seleccionado"
+              [class.ocupado]="asiento.ocupado"
+              (click)="toggleSeleccion(asiento)"
+              [title]="'Asiento ' + asiento.id">
+              {{ asiento.numero }}
+            </button>
+          }
+        </div>
+
+        <!-- Pasillo Derecho -->
+        <div class="pasillo"></div>
+
+        <!-- Columna Derecha (2) -->
+        <div class="bloque-asientos">
+          @for (asiento of fila.bloqueDer; track asiento.id) {
+            <button 
+              class="asiento" 
+              [class.seleccionado]="asiento.seleccionado"
+              [class.ocupado]="asiento.ocupado"
+              (click)="toggleSeleccion(asiento)"
+              [title]="'Asiento ' + asiento.id">
+              {{ asiento.numero }}
+            </button>
+          }
+        </div>
+
+        <!-- Etiqueta derecha de la fila -->
+        <div class="etiqueta-fila">{{ fila.letra }}</div>
+
+      </div>
+    }
+  </div>
+
+  <!-- Leyenda de colores -->
+  <div class="leyenda">
+    <div class="item-leyenda"><div class="cuadro azul"></div> Preferencial (H - K)</div>
+    <div class="item-leyenda"><div class="cuadro amarillo"></div> Últimas Filas (R - T)</div>
+    <div class="item-leyenda"><div class="cuadro blanco"></div> Estándar</div>
+    <div class="item-leyenda"><div class="cuadro seleccionado"></div> Seleccionado</div>
+  </div>
+
+  <div class="acciones-compra">
+    <button class="btn-cancelar" (click)="cancelar()">Cancelar</button>
+    <button class="btn-comprar" 
+            [disabled]="asientosSeleccionados.length === 0"
+            (click)="confirmarCompra(this.usuarioID!)"> <!-- Pasa el ID de tu usuario real -->
+      Comprar {{ asientosSeleccionados.length }} Asiento(s)
+    </button>
+  </div>
+</div>

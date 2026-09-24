@@ -39,23 +39,6 @@ export class Register {
     return !!(campo?.invalid && campo.touched)
   }
 
-  confirmarClaves(campo:string,campoDos:string){
-    const valor = this.registerForm.get(campo);
-    const valorDos = this.registerForm.get(campoDos);
-
-    if(valor?.touched &&  valorDos?.touched){
-      if(!valor?.invalid && !valorDos?.invalid){
-        if(valor?.value != valorDos?.value){
-          return true
-        }
-      }
-      return true
-    }
-      //RECORDATORIO DE TERMINAR ESTA MIERDA POR EL AMOR A DIOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOS
-      
-    return false
-  }
-
   cambiarVisibilidadClave(): void {
     this.mostrarClave = !this.mostrarClave;
   }

@@ -1,0 +1,91 @@
+<div class="admin-container">
+  <div class="admin-card">
+    <h2>Agregar Nueva Película</h2>
+    <p>Registra una película en el catálogo global antes de programarle funciones.</p>
+
+    @if (mensajeError) { <div class="alert alert-error">{{ mensajeError }}</div> }
+    @if (mensajeExito) { <div class="alert alert-success">{{ mensajeExito }}</div> }
+
+    <form [formGroup]="peliculaForm" (ngSubmit)="onSubmit()" novalidate>
+      
+      <!-- Título -->
+      <div class="form-group">
+        <label for="titulo">Título de la Película</label>
+        <input type="text" id="titulo" formControlName="titulo" placeholder="Ej. El Caballero de la Noche" 
+        [class.input-error]="esCampoInvalido('titulo')"/>
+        @if (esCampoInvalido('titulo')) {
+          <span class="error-text">El título es requerido</span>
+        }
+      </div>
+
+      <!-- Sinopsis -->
+      <div class="form-group">
+        <label for="sinopsis">Sinopsis</label>
+        <textarea id="sinopsis" formControlName="sinopsis" rows="4" placeholder="Breve descripción..."
+        [class.input-error]="esCampoInvalido('sinopsis')"></textarea>
+        @if (esCampoInvalido('sinopsis')) {
+          <span class="error-text">La sinopsis es requerida</span>
+        }
+      </div>
+
+      <div class="form-row">
+        <!-- Duración -->
+        <div class="form-group">
+          <label for="duracion_min">Duración (minutos)</label>
+          <input type="number" id="duracion_min" formControlName="duracion_min" min="1" placeholder="Ej. 152" 
+          [class.input-error]="esCampoInvalido('duracion_min')"/>
+          @if (esCampoInvalido('duracion_min')) {
+            <span class="error-text">Ingresa una duración válida</span>
+          }
+        </div>
+
+        <div class="form-group">
+            <label for="puntuacion">Puntuación (0 - 10)</label>
+            <input type="number" id="puntuacion" formControlName="puntuacion" min="0" max="10" step="0.1" placeholder="Ej. 8.5" 
+            [class.input-error]="esCampoInvalido('puntuacion')"/>
+            @if (esCampoInvalido('puntuacion')) {
+            <span class="error-text">Ingresa un valor entre 0 y 10</span>
+            }
+        </div>
+
+        <!-- Clasificación -->
+        <div class="form-group">
+          <label for="clasificacion_edad">Clasificación de Edad</label>
+          <select id="clasificacion_edad" formControlName="clasificacion_edad">
+            <option value="ATP">ATP (Apta todo público)</option>
+            <option value="+13">+13 Años</option>
+            <option value="+18">+18 Años</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- URL del Póster -->
+      <div class="form-group">
+        <label for="poster">URL del Póster</label>
+        <input type="url" id="poster" formControlName="poster" placeholder="https://..."
+        [class.input-error]="esCampoInvalido('poster')" />
+        @if (esCampoInvalido('poster')) {
+          <span class="error-text">Se requiere la URL de la imagen</span>
+        }
+      </div>
+
+      <!-- Selección múltiple de Géneros -->
+      <div class="form-group">
+        <label for="generos_seleccionados">Géneros (Mantén Ctrl/Cmd para seleccionar varios)</label>
+        <select id="generos_seleccionados" formControlName="generos_seleccionados" multiple size="5" class="select-multiple"
+        [class.input-error]="esCampoInvalido('generos_seleccionados')">
+          @for (g of generosDisponibles(); track g.id) {
+            <option [value]="g.id">{{ g.nombre }}</option>
+          }
+        </select>
+        @if (esCampoInvalido('generos_seleccionados')) {
+          <span class="error-text">Debes seleccionar al menos un género</span>
+        }
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="isLoading">
+        {{ isLoading ? 'Guardando...' : 'Guardar Película' }}
+      </button>
+    </form>
+  </div>
+</div>

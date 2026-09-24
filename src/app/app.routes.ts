@@ -1,6 +1,5 @@
 import { Routes } from '@angular/router';
 import { Home } from './componentes/home/home';
-import { Register } from './componentes/register/register';
 
 export const routes: Routes = [
     {
@@ -19,7 +18,27 @@ export const routes: Routes = [
     ,
     {
         path:'register',
-        component:Register
+        loadComponent: () => import('./componentes/register/register').then(m => m.Register)
+    }
+    ,
+    {
+        path:'miPerfil',
+        loadComponent: () => import('./componentes/mi-perfil/mi-perfil').then(m => m.MiPerfil)
+    }
+    ,
+    {
+        path:'adminFunciones',
+        loadComponent: () => import('./componentes/admin-funciones/admin-funciones').then(m => m.AdminFunciones)
+    }
+    ,
+    {
+        path:'adminPeliculas',
+        loadComponent: () => import('./componentes/admin-peliculas/admin-peliculas').then(m => m.AdminPeliculas)
+    }
+    ,
+    {
+        path:'historialFunciones',
+        loadComponent: () => import('./componentes/historial-funciones/historial-funciones').then(m => m.HistorialFunciones)
     }
     ,
     {

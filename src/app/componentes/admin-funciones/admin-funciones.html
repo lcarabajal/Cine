@@ -1,0 +1,96 @@
+<div class="admin-container">
+  <div class="admin-card">
+    <h2>Programar Nueva Función</h2>
+    <p>Asigna horarios asegurando disponibilidad de sala y tiempo de limpieza.</p>
+
+    @if (mensajeError()) { <div class="alert alert-error">{{ mensajeError() }}</div> }
+    @if (mensajeExito()) { <div class="alert alert-success">{{ mensajeExito() }}</div> }
+
+    <form [formGroup]="funcionForm" (ngSubmit)="onSubmit()" novalidate>
+      
+      <!-- Fila 1: Película y Sala -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="pelicula_id">Película</label>
+          <select id="pelicula_id" formControlName="pelicula_id" 
+          [class.input-error]="esCampoInvalido('pelicula_id')">
+            <option value="" disabled selected>Seleccione una película...</option>
+            @for (p of peliculas(); track p.id) {
+              <option [value]="p.id">{{ p.titulo }} ({{ p.duracion_min }} min)</option>
+            }
+          </select>
+          @if (esCampoInvalido('pelicula_id')) {
+            <span class="error-text">Requerido</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="sala_id">Sala</label>
+          <select id="sala_id" formControlName="sala_id"
+          [class.input-error]="esCampoInvalido('sala_id')">
+            <option value="" disabled selected>Seleccione una sala...</option>
+            @for (s of salas(); track s.id) {
+              <option [value]="s.id">{{ s.numero }}</option>
+            }
+          </select>
+          @if (esCampoInvalido('sala_id')) {
+            <span class="error-text">Requerido</span>
+          }
+        </div>
+      </div>
+
+      <!-- Fila 2: Fecha y Hora -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="fecha">Fecha de Proyección</label>
+          <input type="date" id="fecha" formControlName="fecha"
+           [class.input-error]="esCampoInvalido('fecha')"/>
+          @if (esCampoInvalido('fecha')) {
+            <span class="error-text">Requerido</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="hora_inicio">Hora de Inicio</label>
+          <input type="time" id="hora_inicio" formControlName="hora_inicio" 
+          [class.input-error]="esCampoInvalido('hora_inicio')"/>
+          @if (esCampoInvalido('hora_inicio')) {
+            <span class="error-text">Requerido</span>
+          }
+        </div>
+      </div>
+
+      <!-- Fila 3: Formato, Idioma y Precio -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="formato">Formato</label>
+          <select id="formato" formControlName="formato"
+          [class.input-error]="esCampoInvalido('formato')">
+            <option value="2D">2D</option>
+            <option value="3D">3D</option>
+            <option value="4D">4D</option>
+            <option value="5D">5D</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="idioma">Idioma</label>
+          <select id="idioma" formControlName="idioma"
+          [class.input-error]="esCampoInvalido('idioma')">
+            <option value="Castellano">Castellano</option>
+            <option value="Subtitulada">Subtitulada</option>
+          </select>
+        </div>
+        
+        <div class="form-group">
+          <label for="precio">Precio ($)</label>
+          <input type="number" id="precio" formControlName="precio" min="1" />
+        </div>
+      </div>
+
+      <button type="submit" class="btn-submit" [disabled]="isLoading">
+        {{ isLoading ? 'Validando horario...' : 'Programar Función' }}
+      </button>
+    </form>
+  </div>
+</div>

@@ -1,0 +1,69 @@
+<nav class="navbar">
+    <div class="btn-navbar">   
+        <button class="btn btn-dark rounded-pill px-3" routerLink="/home" routerLinkActive="active">Volver</button> 
+    </div>
+</nav>
+<div class="historial-container">
+  <div class="historial-card">
+    <h2>Mi Historial de Funciones</h2>
+    <p class="subtitle">Tus compras y reservas anteriores.</p>
+
+
+    @if (historial().length === 0) {
+      <div class="empty-state">
+        <p>Aún no tienes funciones en tu historial.</p>
+        <button class="btn-primary">Ver Cartelera</button>
+      </div>
+    } @else {
+      <ul class="lista-historial">
+        @for (item of historial(); track item.funcion_id) {
+          <li class="historial-item">
+            
+            <!-- Póster de la película -->
+            <div class="poster-container">
+              <!-- Según el esquema la columna es "poster" -->
+              <img [src]="item.funciones.peliculas.poster" [alt]="item.funciones.peliculas.titulo" />
+            </div>
+
+            <!-- Detalles de la función -->
+            <div class="info-container">
+              <h3>{{ item.funciones.peliculas.titulo }}</h3>
+              
+              <div class="detalles-grid">
+                <div class="detalle-col">
+                  <span class="label">Función:</span>
+                  <span class="valor">{{ item.funciones.fecha_hora_inicio | date:'EEEE d / MM / yy' }}</span>
+                  <span class="valor sub-valor">{{ item.funciones.fecha_hora_inicio | date:'shortTime' }} hs</span>
+                </div>
+                
+                <div class="detalle-col">
+                  <span class="label">Formato:</span>
+                  <span class="valor">{{ item.funciones.formato }} - {{ item.funciones.idioma }}</span>
+                </div>
+
+                <div class="detalle-col">
+                  <span class="label">Asientos ({{ item.asientos.length }}):</span>
+                  <span class="valor asientitos">
+                    <!-- .join(', ') convierte el array ['H5', 'H6'] en "H5, H6" -->
+                    {{ item.asientos.join(', ') || 'Sin numerar' }} 
+                  </span>
+                </div>
+
+              </div>
+            </div>
+
+            <!-- Información de la compra -->
+            <div class="compra-container">
+              <span class="precio">${{ item.precio_total }}</span>
+              <span class="fecha-compra">
+                Comprado el:<br>
+                {{ item.created_at | date:'shortDate' }}
+              </span>
+            </div>
+            
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

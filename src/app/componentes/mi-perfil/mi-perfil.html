@@ -1,0 +1,17 @@
+<nav class="navbar">
+    <div class="btn-navbar">               
+        <button class="btn btn-dark rounded-pill px-3" routerLink="/home" routerLinkActive="active">Volver</button>  
+    </div>
+</nav>
+<div class="perfil-container">
+    <div class="perfil-card ">
+        @if(this.usuarioDatos()){
+            <h2>Esto es su nombre: {{this.usuarioDatos()!.nombre}}</h2>
+            <h2>Esto es su apellido: {{this.usuarioDatos()!.apellido}}</h2>
+            <h2>Esto es su puntos: {{this.usuarioDatos()!.puntos}}</h2>
+        }
+        @else {
+            <h1>Cargando...</h1>
+        }
+    </div>
+</div>

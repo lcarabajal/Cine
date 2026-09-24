@@ -4,10 +4,20 @@ import { environment } from '../enviroments/enviroment';
 
 @Service()
 export class Auth {
-    private supabase: SupabaseClient;
+    public supabase: SupabaseClient;
+    public currentUser: any | undefined | null;
 
     constructor(){
         this.supabase = createClient(environment.supabaseUrl, environment.supabasePublishableKey);
+        this.getUser().then((data)=>{
+            if(data.data.user){
+                this.currentUser = data.data.user;
+            }
+            else{
+                console.log("Fallo el data.data.user")
+            }
+        })
+
     }
 
     signIn(email:string, password:string){
@@ -22,6 +32,14 @@ export class Auth {
         return this.supabase.from(tabla).insert(data);
     }
 
+    selectData(tabla: string, columna ?:string, valor ?:any){
+        if(columna && valor){
+            return this.supabase.from(tabla).select("*").eq(columna,valor).single();
+        }
+
+        return this.supabase.from(tabla).select("*");
+    }
+
     signOut(){
         return this.supabase.auth.signOut();
     }
@@ -32,5 +50,16 @@ export class Auth {
 
     getUsers(){
         return this.supabase.auth.admin.listUsers();
+    }
+
+    async getId(){
+        const {data} = await this.supabase.from('datosRegistrados').select("id").eq('email', `${this.currentUser.email}`).single();
+
+        if(data){
+            console.log(data);
+            return data.id
+        }
+
+        return null
     }
 }

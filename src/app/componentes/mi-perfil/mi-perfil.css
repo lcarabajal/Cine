@@ -1,0 +1,20 @@
+.perfil-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #0f172a;
+  padding: 2rem 1rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+}
+
+.perfil-card {
+  width: 100%;
+  max-width: 620px;
+  background-color: #1e293b;
+  border-radius: 14px;
+  padding: 2.5rem;
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+  color: #f8fafc;
+}

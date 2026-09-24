@@ -2,17 +2,39 @@
     <div class="btn-navbar">
         @if(this.currentUser()!= null){
             <button (click)="cerrarSesion()"class="btn btn-dark rounded-pill px-3" >Cerrar Sesión</button>
+            <button routerLink="/miPerfil" class="btn btn-dark rounded-pill px-3" >Mi Perfil</button>
+            <button class="btn btn-dark rounded-pill px-3" routerLink="/historialFunciones" routerLinkActive="active">Historial</button> 
         }
-        @else{
-            
+        @else{          
             <button class="btn btn-dark rounded-pill px-3" routerLink="/login" routerLinkActive="active">Iniciar Sesión</button> 
-
             <button class="btn btn-dark rounded-pill px-3" routerLink="/register" routerLinkActive="active">Registrarse</button> 
-        }
-        
+        }   
     </div>
 </nav>
 
-<div class="register-container">
-    Bienvenido Al Cine Joits! 
+<div class="home-layout">
+  <header class="home-hero">
+    <h1>Cartelera de Cine</h1>
+    <br>
+
+    <div class="search-section">
+      <div class="search-box">
+        <span class="search-icon"></span>
+        <input
+          type="text"
+          [ngModel]="generoBuscado()"
+          (ngModelChange)="onBuscar($event)"
+          placeholder="Buscar por género (ej. Acción, Drama, Ciencia Ficción)..."
+        />
+        @if (generoBuscado()) {
+          <button type="button" class="btn-clear " (click)="onBuscar('')">✕</button>
+        }
+      </div>
+    </div>
+  </header>
+
+  
+  <main class="home-center-content">
+    <app-catalogo-peliculas [filtroGenero]="generoBuscado()"></app-catalogo-peliculas>
+  </main>
 </div>

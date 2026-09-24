@@ -1,0 +1,209 @@
+.sala-wrapper {
+  background-color: #0b1120;
+  padding: 2rem 1rem;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-family: system-ui, -apple-system, sans-serif;
+  overflow-x: auto; /* Permite scroll en móviles */
+}
+
+/* Pantalla del cine */
+.pantalla-container {
+  width: 100%;
+  max-width: 700px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.pantalla-curva {
+  width: 100%;
+  height: 40px;
+  border-top: 4px solid #94a3b8;
+  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  box-shadow: 0 -15px 30px rgba(255, 255, 255, 0.05);
+}
+
+.pantalla-texto {
+  color: #64748b;
+  font-size: 0.8rem;
+  letter-spacing: 0.3em;
+  margin-top: 0.5rem;
+}
+
+/* Grilla de asientos */
+.asientos-container {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding-bottom: 2rem;
+}
+
+/* Cada Fila completa */
+.fila {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Letras de los costados (A, B, C...) */
+.etiqueta-fila {
+  color: #94a3b8;
+  width: 25px;
+  text-align: center;
+  font-weight: bold;
+  font-size: 1rem;
+}
+
+/* Bloques que contienen los botones */
+.bloque-asientos {
+  display: flex;
+  gap: 0.4rem;
+}
+
+/* Pasillos transparentes */
+.pasillo {
+  width: 40px;
+}
+
+/* Diseño de la butaca (Asiento) */
+.asiento {
+  width: 32px;
+  height: 30px;
+  border: 1px solid transparent;
+  border-radius: 6px 6px 4px 4px;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: #0f172a;
+  cursor: pointer;
+  transition: transform 0.1s, filter 0.2s, background-color 0.2s;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Efecto hover general para asientos libres */
+.asiento:not(.ocupado):hover {
+  transform: scale(1.15);
+  filter: brightness(1.2);
+}
+
+/* ESTILOS POR DEFECTO (FILAS NORMALES) */
+.tema-normal .asiento {
+  background-color: #cbd5e1; /* Gris clarito */
+  box-shadow: 0 4px 0 #94a3b8;
+}
+
+/* FILAS RESALTADAS EN AZUL (H, I, J, K) */
+.tema-azul .asiento {
+  background-color: #38bdf8;
+  color: #082f49;
+  box-shadow: 0 4px 0 #0284c7;
+}
+
+/* FILAS RESALTADAS EN AMARILLO (R, S, T) */
+.tema-amarillo .asiento {
+  background-color: #fde047;
+  color: #422006;
+  box-shadow: 0 4px 0 #ca8a04;
+}
+
+/* ASIENTO SELECCIONADO POR EL USUARIO (Verde sin importar la fila) */
+.asiento.seleccionado {
+  background-color: #4ade80 !important;
+  color: #064e3b !important;
+  box-shadow: 0 4px 0 #16a34a !important;
+  border: 2px solid #ffffff;
+}
+
+/* ASIENTO OCUPADO (No disponible) */
+.asiento.ocupado {
+  background-color: #334155 !important;
+  color: #475569 !important;
+  box-shadow: 0 4px 0 #1e293b !important;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+/* LEYENDA INFERIOR */
+.leyenda {
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
+  padding-top: 2rem;
+  border-top: 1px dashed #334155;
+  color: #cbd5e1;
+  font-size: 0.85rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.item-leyenda {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.cuadro {
+  width: 16px;
+  height: 16px;
+  border-radius: 3px;
+}
+
+.cuadro.blanco { background-color: #cbd5e1; }
+.cuadro.azul { background-color: #38bdf8; }
+.cuadro.amarillo { background-color: #fde047; }
+.cuadro.seleccionado { background-color: #4ade80; }
+
+/* Botones de acción inferiores */
+.acciones-compra {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1.5rem;
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px dashed #334155;
+  width: 100%;
+}
+
+.btn-cancelar {
+  background-color: transparent;
+  color: #94a3b8;
+  padding: 0.75rem 1.5rem;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-cancelar:hover {
+  background-color: #334155;
+  color: #f8fafc;
+}
+
+.btn-comprar {
+  background-color: #38bdf8;
+  color: #0f172a;
+  padding: 0.75rem 1.5rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.15s, background-color 0.2s;
+}
+
+.btn-comprar:not(:disabled):hover {
+  background-color: #7dd3fc;
+  transform: translateY(-2px);
+}
+
+.btn-comprar:disabled {
+  background-color: #334155;
+  color: #64748b;
+  cursor: not-allowed;
+}
