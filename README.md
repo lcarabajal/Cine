@@ -5,13 +5,13 @@ Esta es una aplicación web diseñada para ofrecer una experiencia de usuario fl
 ### 1. 🔐 Autenticación y Registro Seguro
 * **Login y Registro Funcional:** Sistema de autenticación completo para usuarios.
 * **Datepicker Customizado:** El formulario de registro cuenta con un selector de fechas (Datepicker) totalmente personalizado e integrado con la estética oscura de la aplicación para seleccionar la fecha de nacimiento de manera cómoda.
-#DatePickerCustom
+# DatePickerCustom
 <img width="1040" height="958" alt="datepickercustom" src="https://github.com/user-attachments/assets/7d1f8ea3-f3b5-417a-82b8-15be6f3b39c5" />
 
-#Registro
+# Registro
 <img width="1906" height="1072" alt="registro" src="https://github.com/user-attachments/assets/5a64576a-0e88-4e20-adc6-cec2b07c7afe" />
 
-#Login
+# Login
 <img width="1903" height="1072" alt="login" src="https://github.com/user-attachments/assets/5f080930-0644-4e44-be17-ad549a443e2b" />
 
 ### 2. 🎞️ Home y Catálogo de peliculas
