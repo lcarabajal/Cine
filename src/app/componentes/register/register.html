@@ -69,7 +69,7 @@
               formControlName="clave"
               placeholder="••••••••"
               [class.input-error]="esCampoInvalido('clave')"
-            />
+            >
             <button
               type="button"
               class="toggle-password"
@@ -97,16 +97,18 @@
      
       <div class="form-row">
         <div class="form-group">
-          <label>Fecha de Nacimiento</label>
-          <input           
-            type="date"
-            formControlName="fechaDeNacimiento"
-            [class.input-error]="esCampoInvalido('fechaDeNacimiento')"
-          />
-          @if (esCampoInvalido('fechaDeNacimiento')) {
-            <span class="error-text">Indicá tu fecha de nacimiento.</span>
-          }
+          <label for="fecha" >Fecha de Nacimiento</label>
+          <button id="fecha" type="button" class="btn-input-falso" (click)="mostrarPicker.set(true)">
+            📅 {{ registerForm.get('fechaDeNacimiento')?.value }}
+          </button>
         </div>
+        @if (mostrarPicker()) {
+          <app-custom-datepicker 
+            (fechaConfirmada)="onFechaConfirmada($event)" 
+            [mostrarHorario]="false"
+            (cerrar)="mostrarPicker.set(false)">
+          </app-custom-datepicker>
+        }
 
         <div class="form-group">
           <label>Tipo de Sangre</label>

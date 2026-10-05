@@ -1,0 +1,272 @@
+.candy-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header h2 {
+  color: #f8fafc;
+  border-bottom: 2px solid #334155;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.grid-candy {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+}
+
+@media (max-width: 800px) {
+  .grid-candy { grid-template-columns: 1fr; }
+}
+
+.panel {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  padding: 1.5rem;
+}
+
+.panel h3 {
+  color: #38bdf8;
+  margin-top: 0;
+  margin-bottom: 1.5rem;
+}
+
+.mt-4 { margin-top: 2rem; }
+
+/* Tarjetas de productos */
+.lista-items {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.item-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1e293b;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #475569;
+}
+
+.combo-card {
+  border-left-color: #fbbf24; /* Dorado para diferenciar los combos */
+}
+
+.item-card .info {
+  display: flex;
+  flex-direction: column;
+}
+
+.item-card strong { color: #f8fafc; }
+.item-card small { color: #94a3b8; font-size: 0.8rem; margin-top: 4px; }
+
+.acciones {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.signo { color: #94a3b8; font-weight: bold; }
+
+.input-precio {
+  width: 80px;
+  background-color: #0f172a;
+  border: 1px solid #475569;
+  color: white;
+  border-radius: 4px;
+  padding: 0.4rem;
+  font-weight: bold;
+}
+.input-precio:focus { outline: none; border-color: #38bdf8; }
+
+.btn-guardar {
+  background-color: transparent;
+  color: #38bdf8;
+  border: 1px solid #38bdf8;
+  padding: 0.4rem 0.8rem;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.btn-guardar:hover {
+  background-color: rgba(56, 189, 248, 0.1);
+}
+
+/* Formularios del Combo */
+.form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label { color: #94a3b8; font-size: 0.9rem; }
+
+.input-custom {
+  background-color: #1e293b;
+  border: 1px solid #475569;
+  color: white;
+  padding: 0.8rem;
+  border-radius: 6px;
+}
+
+.caja-seleccion {
+  background-color: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 6px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+  max-height: 200px;
+  overflow-y: auto;
+}
+
+.checkbox-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #e2e8f0;
+  cursor: pointer;
+}
+
+.btn-crear-combo {
+  width: 100%;
+  background-color: #fbbf24;
+  color: #451a03;
+  font-weight: bold;
+  border: none;
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+.btn-crear-combo:hover { background-color: #f59e0b; }
+/* Para poner dos inputs en la misma línea */
+.form-row {
+  display: flex;
+  gap: 1rem;
+}
+
+.flex-1 { flex: 1; }
+.flex-2 { flex: 2; }
+
+/* Ajuste para el textarea */
+textarea.input-custom {
+  resize: vertical;
+  font-family: inherit;
+}
+
+/* Estilo para el switch/checkbox de Activo */
+.switch-container {
+  margin-top: 0.5rem;
+  padding: 0.8rem;
+  background-color: #1e293b;
+  border-radius: 6px;
+  border: 1px solid #475569;
+}
+
+.switch-label {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #f8fafc !important;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.switch-label input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+  accent-color: #38bdf8; /* Color celeste cuando se marca */
+  cursor: pointer;
+}
+
+/* Botón de crear producto (Verde para diferenciarlo del combo amarillo) */
+.btn-crear-producto {
+  width: 100%;
+  background-color: #10b981; /* Verde esmeralda */
+  color: #022c22;
+  font-weight: bold;
+  border: none;
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+.btn-crear-producto:hover {
+  background-color: #059669;
+}
+/* Mensajitos de error para el formulario reactivo */
+.error-text {
+  color: #ef4444; /* Rojo alerta */
+  font-size: 0.8rem;
+  margin-top: 4px;
+}
+
+/* Efecto visual cuando los campos obligatorios tienen error */
+.input-custom.ng-invalid.ng-touched {
+  border-color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.05);
+}
+
+/* Botón deshabilitado cuando el formulario no cumple las reglas */
+.btn-crear-producto:disabled {
+  background-color: #475569; /* Gris */
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+/* Agrega o reemplaza el .grid-candy con esto */
+.grid-candy {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  align-items: start; /* Para que las columnas no se estiren forzadamente */
+}
+
+/* La columna derecha apila los formularios con un espacio entre ellos */
+.columna-creadores {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+@media (max-width: 900px) {
+  .grid-candy { grid-template-columns: 1fr; }
+}
+
+/* Color específico para el botón del combo para diferenciarlo */
+.btn-crear-combo {
+  width: 100%;
+  background-color: #fbbf24;
+  color: #451a03;
+  font-weight: bold;
+  border: none;
+  padding: 1rem;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+  margin-top: 1rem;
+  transition: background-color 0.2s;
+}
+
+.btn-crear-combo:hover:not(:disabled) {
+  background-color: #f59e0b;
+}
+
+.btn-crear-combo:disabled, .btn-crear-producto:disabled {
+  background-color: #475569;
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.7;
+}

@@ -1,0 +1,78 @@
+<!-- Se muestra solo si el Signal en el servicio es true -->
+@if (carritoSvc.isCarritoAbierto()) {
+  
+  <!-- Fondo oscuro semitransparente -->
+  <div class="carrito-overlay" (click)="carritoSvc.cerrarCarrito()">
+    
+    <!-- Panel lateral (stopPropagation evita que al dar clic adentro se cierre) -->
+    <div class="carrito-drawer" (click)="$event.stopPropagation()">
+      
+      <div class="carrito-header">
+        <h2>Mi Carrito</h2>
+        <button class="btn-cerrar-drawer" (click)="carritoSvc.cerrarCarrito()">✕</button>
+      </div>
+
+      <!-- El interior es tu mismo código anterior -->
+      <div class="carrito-body">
+        @if (carritoSvc.tickets().length === 0 && carritoSvc.candy().length === 0) {
+          <div class="vacio">Tu carrito está vacío. ¡Elige una peli o snacks!</div>
+        } @else {
+          
+          <!-- SECCIÓN CINE -->
+          @if (carritoSvc.tickets().length > 0) {
+            <div class="seccion-carrito">
+              <h3 class="titulo-seccion">🎬 Entradas</h3>
+              @for (ticket of carritoSvc.tickets(); track ticket.funcionId) {
+                <!-- ... (tu código del item del ticket) ... -->
+                <div class="item-fila">
+                  <div class="item-info">
+                    <strong>{{ ticket.peliculaTitulo }}</strong>
+                    <p class="detalle-chico">Asientos: {{ ticket.asientos.join(', ') }}</p>
+                  </div>
+                  <div class="item-precio">
+                    <span>${{ ticket.asientos.length * ticket.precioUnitario }}</span>
+                    <button (click)="carritoSvc.quitarTickets(ticket.funcionId)" class="btn btn-outline-light rounded-pill px-3">🗑️</button>
+                  </div>
+                </div>
+              }
+            </div>
+          }
+
+          <!-- SECCIÓN CANDY BAR -->
+          @if (carritoSvc.candy().length > 0) {
+            <div class="seccion-carrito">
+              <h3 class="titulo-seccion">🍿 Snacks</h3>
+              @for (item of carritoSvc.candy(); track item.id) {
+                <!-- ... (tu código del item del candy) ... -->
+                 <div class="item-fila">
+                  <div class="item-info snacks-info">
+                    <div>
+                      <strong>{{ item.nombre }}</strong>
+                      <div class="controles-cantidad">
+                        <button class="btn btn-outline-light rounded-pill px-3" (click)="carritoSvc.quitarCandy(item.id)">-</button>
+                        <span class="espacio">{{ item.cantidad }}</span>
+                        <button class="btn btn-outline-light rounded-pill px-3" (click)="carritoSvc.agregarCandy(item)">+</button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="item-precio">${{ item.precio * item.cantidad }}</div>
+                </div>
+              }
+            </div>
+          }
+        }
+      </div> <!-- fin carrito body -->
+
+      <!-- Footer siempre abajo con el total -->
+      @if (carritoSvc.tickets().length > 0 || carritoSvc.candy().length > 0) {
+        <div class="carrito-footer">
+          <div class="totales">
+            <h2>Total: <span class="monto-final">${{ carritoSvc.granTotal() }}</span></h2>
+          </div>
+          <button class="btn-pagar" (click)="finalizarCompra()">Proceder al Pago</button>
+        </div>
+      }
+
+    </div>
+  </div>
+}

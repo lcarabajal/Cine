@@ -1,0 +1,256 @@
+.pantalla-validacion {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1rem;
+  font-family: system-ui, -apple-system, sans-serif;
+  transition: background-color 0.3s ease;
+}
+
+/* Colores de fondo dinámicos según el estado */
+.pantalla-validacion.cargando { background-color: #0f172a; }
+.pantalla-validacion.valido { background-color: #064e3b; } /* Verde oscuro */
+.pantalla-validacion.invalido { background-color: #7f1d1d; } /* Rojo oscuro */
+.pantalla-validacion.error { background-color: #450a0a; } /* Rojo más oscuro */
+
+.tarjeta-resultado {
+  background-color: #1e293b;
+  border-radius: 16px;
+  padding: 3rem 2rem;
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  color: #f8fafc;
+}
+
+.icono {
+  font-size: 5rem;
+  margin-bottom: 1rem;
+}
+
+.spinner {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
+h2 {
+  margin: 0 0 1.5rem 0;
+  font-size: 1.8rem;
+}
+
+/* Estilos de la info del ticket */
+.datos-ticket {
+  background-color: #0f172a;
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  text-align: left;
+}
+
+.datos-ticket.advertencia {
+  border-color: #ef4444;
+  text-align: center;
+  color: #fca5a5;
+}
+
+.etiqueta {
+  color: #94a3b8;
+  font-size: 0.9rem;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.datos-ticket h3 {
+  margin: 0.2rem 0 1rem 0;
+  color: #38bdf8;
+  font-size: 1.4rem;
+}
+
+.asiento-destacado {
+  background-color: #38bdf8;
+  color: #0f172a;
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  font-size: 1.5rem;
+  font-weight: bold;
+  border-radius: 8px;
+  margin: 0.5rem 0 1rem 0;
+}
+
+.validador-container {
+  max-width: 600px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background-color: #0f172a;
+  border-radius: 12px;
+  border: 1px solid #334155;
+  text-align: center;
+}
+
+.header-validacion h2 {
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+}
+
+.header-validacion p {
+  color: #94a3b8;
+  margin-bottom: 2rem;
+}
+
+/* Diseño del buscador */
+.buscador-box {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 2rem;
+}
+
+.input-codigo {
+  flex: 1;
+  background-color: #1e293b;
+  border: 2px solid #475569;
+  color: #f8fafc;
+  font-size: 1.2rem;
+  padding: 1rem;
+  border-radius: 8px;
+  text-transform: uppercase; /* Convierte el texto a mayúsculas automáticamente */
+  letter-spacing: 2px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.input-codigo:focus {
+  border-color: #38bdf8;
+}
+
+.btn-validar {
+  background-color: #38bdf8;
+  color: #0f172a;
+  font-weight: bold;
+  font-size: 1.1rem;
+  border: none;
+  padding: 0 2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-validar:hover {
+  background-color: #0ea5e9;
+}
+
+/* --- ESTILOS DEL OVERLAY --- */
+.overlay-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(2, 6, 23, 0.85); /* Fondo oscuro semitransparente */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999; /* Asegura que esté por encima de TODO */
+  backdrop-filter: blur(4px); /* Difumina ligeramente lo que hay detrás */
+}
+
+/* La tarjeta que flota en el medio */
+.overlay-card {
+  background-color: #1e293b;
+  padding: 3rem;
+  border-radius: 16px;
+  text-align: center;
+  min-width: 350px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Efecto de rebote */
+}
+
+/* Bordes de color según el resultado */
+.overlay-card.valido {
+  border: 3px solid #10b981; /* Verde esmeralda */
+  box-shadow: 0 10px 40px rgba(16, 185, 129, 0.2);
+}
+
+.overlay-card.invalido {
+  border: 3px solid #ef4444; /* Rojo alerta */
+  box-shadow: 0 10px 40px rgba(239, 68, 68, 0.2);
+}
+
+/* Textos de la tarjeta */
+.overlay-card h2 {
+  color: #f8fafc;
+  margin: 0;
+  font-size: 1.8rem;
+}
+
+.info-entrada {
+  background-color: #0f172a;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #38bdf8;
+}
+
+.info-entrada small {
+  color: #94a3b8;
+  letter-spacing: 1px;
+}
+
+.info-entrada h3 {
+  color: #38bdf8;
+  margin: 5px 0 0 0;
+  font-size: 1.5rem;
+}
+
+.error-msg {
+  color: #f87171;
+  font-size: 1.1rem;
+}
+
+/* Botón para cerrar */
+.btn-siguiente {
+  margin-top: 1rem;
+  background-color: #334155;
+  color: white;
+  border: none;
+  padding: 0.8rem 2rem;
+  border-radius: 8px;
+  font-size: 1.1rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  width: 100%;
+}
+
+.btn-siguiente:hover {
+  background-color: #475569;
+}
+
+/* Iconos circulares gigantes */
+.icono-circulo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: bold;
+  color: white;
+}
+.icono-circulo.verde { background-color: #10b981; }
+.icono-circulo.rojo { background-color: #ef4444; }
+
+/* Animación de entrada */
+@keyframes popIn {
+  0% { transform: scale(0.8); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}

@@ -139,5 +139,135 @@
 }
 
 
+/* --- ENVOLTORIO PRINCIPAL --- */
+.carrusel-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  margin: 2rem 0;
+  padding: 0 3rem; /* ESTO ES NUEVO: Deja 3rem de espacio a la izquierda y derecha para las flechas */
+  box-sizing: border-box;
+}
+
+/* Ajustamos la posición de las flechas para aprovechar ese nuevo espacio */
+.btn-carrusel.prev { 
+  left: 5px; 
+}
+
+.btn-carrusel.next { 
+  right: 5px; 
+}
+
+/* --- CONTENEDOR DESLIZABLE --- */
+.carrusel-container {
+  display: flex;
+  gap: 2.5rem; /* Antes era 1.5rem. Esto separa más cada película */
+  overflow-x: auto; 
+  scroll-snap-type: x mandatory; 
+  padding: 2rem 1rem; /* Le da más espacio arriba y abajo para que la sombra al hacer hover no se corte */
+  width: 100%;
+  scrollbar-width: none; 
+  -ms-overflow-style: none; 
+}
+.carrusel-container::-webkit-scrollbar {
+  display: none; /* Chrome/Safari */
+}
+
+/* --- TARJETA DE PELÍCULA --- */
+.peli-card {
+  flex: 0 0 280px; /* Ancho fijo para las tarjetas en el carrusel */
+  scroll-snap-align: start; /* Punto de frenado */
+  background-color: #1e293b;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #334155;
+  transition: transform 0.3s ease;
+}
+
+.peli-card:hover {
+  transform: translateY(-5px);
+  border-color: #38bdf8;
+}
+
+/* --- PORTADAS SIN RECORTES (LA SOLUCIÓN) --- */
+.poster-container {
+  height: 400px; /* Altura fija para todas las películas */
+  position: relative;
+  background-color: #000000; /* Fondo negro por si la imagen es más angosta */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.poster-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* ¡Hace que la imagen entre completa sin cortarse! */
+}
+
+/* --- BOTONES DEL CARRUSEL --- */
+.btn-carrusel {
+  position: absolute;
+  z-index: 10;
+  background-color: rgba(15, 23, 42, 0.85);
+  color: #38bdf8;
+  border: 1px solid #38bdf8;
+  border-radius: 50%;
+  width: 45px;
+  height: 45px;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.5);
+}
+
+.btn-carrusel:hover {
+  background-color: #38bdf8;
+  color: #0f172a;
+  transform: scale(1.1);
+}
+
+.btn-carrusel.prev { left: -20px; }
+.btn-carrusel.next { right: -20px; }
+
+/* En celulares ocultamos los botones físicos porque el usuario puede hacer "swipe" con el dedo */
+@media (max-width: 768px) {
+  .btn-carrusel { display: none; }
+  .peli-card { flex: 0 0 240px; /* Tarjetas un poco más finas en el celular */ }
+}
 
 
+.textoCarrusel{
+  color:#ffffff
+}
+
+.peli-info {
+  padding: 1.5rem; /* Esto empuja los textos hacia adentro para que no toquen los bordes */
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Esto separa el título de los botones de horario */
+}
+
+/* Opcional: Para que el título y la duración no estén tan pegados */
+.peli-info h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.3rem;
+}
+
+.btn-ver-opiniones{
+  background: none;
+  border: none; 
+  color: #38bdf8; 
+  text-decoration:dashed; 
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding-left: 10px;
+}
+
+.btn-ver-opiniones:hover{
+  text-decoration:underline; 
+}

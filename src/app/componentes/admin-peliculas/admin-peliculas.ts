@@ -16,6 +16,7 @@ export class AdminPeliculas implements OnInit {
 
   peliculaForm: FormGroup;
   generosDisponibles = signal<Genero[]>([]);
+
   
   isLoading = false;
   mensajeError: string | null = null;
@@ -32,6 +33,7 @@ export class AdminPeliculas implements OnInit {
       generos_seleccionados: [[], Validators.required] 
     });
   }
+
 
   async ngOnInit(): Promise<void> {
     await this.cargarGeneros();

@@ -1,0 +1,66 @@
+<div class="overlay" (click)="cerrar.emit()">
+  <div class="picker-modal" (click)="$event.stopPropagation()">
+    
+    <!-- HEADER: Navegación de Meses -->
+    <div class="picker-header">
+      <button class="btn-nav" (click)="cambiarMes(-1)">❮</button>
+      <h3>{{ mesAnioActual() }}</h3>
+      <button class="btn-nav" (click)="cambiarMes(1)">❯</button>
+    </div>
+
+    <!-- CALENDARIO -->
+    <div class="calendario-grid">
+      <!-- Días de la semana -->
+      @for (dia of diasSemana; track $index) {
+        <div class="dia-semana">{{ dia }}</div>
+      }
+      
+      <!-- Números del mes -->
+      @for (dia of calendario(); track $index) {
+        @if (dia === null) {
+          <div class="dia-vacio"></div>
+        } @else {
+          <button 
+            class="btn-dia" 
+            [class.activo]="diaSeleccionado() === dia"
+            (click)="seleccionarDia(dia)">
+            {{ dia }}
+          </button>
+        }
+      }
+    </div>
+    @if(mostrarHorario){ 
+        <hr class="divisor">
+    
+        <!-- SELECTOR DE HORARIO -->
+        <div class="horario-section">
+          <span>Horario:</span>
+          <div class="time-inputs">
+            <select [(ngModel)]="horaSeleccionada" class="custom-select">
+              
+              <option value="14">14</option>
+              <option value="16">16</option>
+              <option value="18">18</option>
+              <option value="20">20</option>
+              <option value="22">22</option>
+              <option value="23">23</option>
+            </select>
+            <span class="dos-puntos">:</span>
+            <select [(ngModel)]="minutoSeleccionado" class="custom-select">
+              <option value="00">00</option>
+              <option value="15">15</option>
+              <option value="30">30</option>
+              <option value="45">45</option>
+            </select>
+          </div>
+        </div>
+    }
+    <br>
+    <!-- BOTONES DE ACCIÓN -->
+    <div class="acciones">
+      <button class="btn-cancelar" (click)="cerrar.emit()">Cancelar</button>
+      <button class="btn-confirmar" (click)="confirmar()">Confirmar</button>
+    </div>
+
+  </div>
+</div>

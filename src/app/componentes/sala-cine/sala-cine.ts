@@ -2,6 +2,8 @@ import { Component, OnInit, Input, inject, EventEmitter, Output, signal } from '
 import { CommonModule } from '@angular/common';
 import { Fila, Asiento } from '../../interfaces/sala-asientos';
 import { Auth } from '../../servicios/auth';
+import { CarritoService } from '../../servicios/carrito';
+import { Pelicula } from '../../interfaces/Pelicula';
 
 @Component({
   selector: 'app-sala-cine',
@@ -13,19 +15,23 @@ import { Auth } from '../../servicios/auth';
 export class SalaCine implements OnInit {
   // Recibimos el ID de la función seleccionada desde la vista anterior
   @Input() funcionId!: number; 
+  @Input() peliculaTitulo!: string;
+  @Input() fechaFuncion!: string;
+  @Input() precioFuncion!: number;
   @Output() cerrar = new EventEmitter<void>(); 
+  
   
   filas= signal<Fila[]>([]);
   asientosOcupadosDb: string[] = [];
   asientosSeleccionados: string[] = [];
-  usuarioID: number | null = null; 
+
   private auth = inject(Auth);
+  carritoSvc = inject(CarritoService);
 
 
   async ngOnInit(): Promise<void> {
     if(this.funcionId) {
       await this.cargarAsientosOcupados();
-      this.usuarioID = await this.auth.getId();
     }
     this.generarSala(); 
   }
@@ -51,6 +57,8 @@ export class SalaCine implements OnInit {
 
     const filasGeneradas = letras.map((letra) => {
       let tipoColor: 'normal' | 'azul' | 'amarillo' = 'normal';
+      //H, I mepa que tienen que volar J y k se unifican 
+      //
       if (['H', 'I', 'J', 'K'].includes(letra)) tipoColor = 'azul';
       else if (['R', 'S', 'T'].includes(letra)) tipoColor = 'amarillo';
 
@@ -97,30 +105,20 @@ export class SalaCine implements OnInit {
     }
   }
 
-  // Método de compra final (Llamado por un botón "Confirmar Compra")
-  async confirmarCompra(usuarioId: number): Promise<void> {
+  confirmarCompra(): void {
     if (this.asientosSeleccionados.length === 0) return;
 
-    // Preparamos el array para insertar múltiples filas de una vez en Supabase
-    const nuevasReservas = this.asientosSeleccionados.map(codigo => ({
-      id_usuario: usuarioId,
-      id_funcion: this.funcionId,
-      codigo_asiento: codigo
-    }));
+    // Supongamos que pasas el titulo, fecha y precio como @Input() también
+    this.carritoSvc.agregarTickets({
+      funcionId: this.funcionId,
+      peliculaTitulo: this.peliculaTitulo, // Reemplazar con variable real
+      fecha: this.fechaFuncion, // Reemplazar con variable real
+      asientos: this.asientosSeleccionados,
+      precioUnitario: this.precioFuncion // Reemplazar con variable real
+    });
 
-    const { error } = await this.auth.supabase
-      .from('historial_funciones')
-      .insert(nuevasReservas);
-
-    if (error) {
-      // Si entra aquí, probablemente alguien más compró el asiento un segundo antes (por el Constraint UNIQUE)
-      alert('Error en la compra. Es posible que uno de los asientos ya haya sido reservado.');
-      await this.cargarAsientosOcupados(); // Recargamos para mostrar quién nos lo robó
-      this.generarSala(); // Redibujamos la sala
-    } else {
-      alert('¡Compra exitosa!');
-      this.cerrar.emit(); 
-    }
+    alert('¡Asientos agregados al carrito!');
+    this.cerrar.emit();
   }
 
   cancelar(): void {

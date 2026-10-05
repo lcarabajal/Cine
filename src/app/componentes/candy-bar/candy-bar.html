@@ -1,0 +1,90 @@
+<nav class="navbar">
+    <div class="btn-navbar">  
+        <button class="btn btn-dark rounded-pill px-3" routerLink="/home">Volver</button> 
+    </div>
+</nav>
+<div class="candybar-container">
+  
+  <!-- COLUMNA IZQUIERDA: LISTA DE PRODUCTOS -->
+  <div class="productos-section">
+    <h2>Catálogo Candy Bar 🍿</h2>
+    
+    @if (isLoading()) {
+      <p>Cargando delicias...</p>
+    } @else {
+      <div class="grid-productos">
+        @for (prod of productos(); track prod.id) {
+          <div class="tarjeta-producto">
+            <div class="img-container">
+              <img [src]="prod.imagen_url || 'assets/default-snack.jpg'" [alt]="prod.nombre">
+              <span class="badge-categoria">{{ prod.categoria }}</span>
+            </div>
+            
+            <div class="info-producto">
+              <h3>{{ prod.nombre }}</h3>
+              <p class="desc">{{ prod.descripcion }}</p>
+              
+              <div class="accion-comprar">
+                <span class="precio">${{ prod.precio }}</span>
+                <!-- LLAMAMOS DIRECTAMENTE AL SERVICIO -->
+                <button class="btn-agregar" (click)="carritoSvc.agregarCandy(prod)">
+                  + Agregar
+                </button>
+              </div>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  </div>
+
+  <!-- COLUMNA DERECHA: RESUMEN DE SNACKS EN EL CARRITO GLOBAL -->
+  <div class="carrito-section">
+    <div class="carrito-card">
+      <h2>Tus Snacks 🛒</h2>
+
+      <!-- LEEMOS EL SIGNAL DEL SERVICIO -->
+      @if (carritoSvc.candy().length === 0) {
+        <div class="carrito-vacio">
+          <p>Tu carrito está vacío.</p>
+          <small>Agrega pochoclos para disfrutar la peli.</small>
+        </div>
+      } @else {
+        <ul class="lista-carrito">
+          <!-- RECORREMOS LOS SNACKS GUARDADOS EN EL SERVICIO -->
+          @for (item of carritoSvc.candy(); track item.id) {
+            <li class="item-carrito">
+              <div class="item-info">
+                <span class="item-nombre">{{ item.nombre }}</span>
+                <span class="item-precio">${{ item.precio * item.cantidad }}</span>
+              </div>
+              
+              <div class="item-controles">
+                <!-- LLAMAMOS AL SERVICIO PARA RESTAR -->
+                <button class="btn-control" (click)="carritoSvc.quitarCandy(item.id)">-</button>
+                <span class="cantidad">{{ item.cantidad }}</span>
+                <!-- LLAMAMOS AL SERVICIO PARA SUMAR -->
+                <button class="btn-control" (click)="carritoSvc.agregarCandy(item)">+</button>
+              </div>
+            </li>
+          }
+        </ul>
+
+        <div class="carrito-footer">
+          <div class="total-row">
+            <span>Subtotal Snacks:</span>
+            <!-- LEEMOS EL SIGNAL COMPUTADO DEL SERVICIO -->
+            <span class="total-monto">${{ carritoSvc.totalCandy() }}</span> 
+          </div>
+          
+          <div class="botones-carrito">
+            <button class="btn-vaciar" (click)="carritoSvc.vaciarCarrito()">Vaciar</button>
+            <!-- AHORA ESTE BOTÓN TE LLEVA AL COMPONENTE DEL CARRITO GLOBAL PARA PAGAR -->
+            <button class="btn-pagar" (click)="irAlCarritoGlobal()">Ver Total y Pagar</button>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+  <app-carrito></app-carrito>
+</div>

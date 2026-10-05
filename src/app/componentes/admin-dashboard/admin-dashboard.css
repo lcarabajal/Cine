@@ -1,0 +1,77 @@
+/* Contenedor principal centrado */
+.dashboard-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh; /* Usa el 80% del alto de la pantalla */
+  padding: 2rem;
+  background-color: #1f4252;
+}
+
+.header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.header h2 {
+  color: #f8fafc;
+  font-size: 2.5rem;
+  margin: 0 0 0.5rem 0;
+}
+
+.header p {
+  color: #94a3b8;
+  font-size: 1.1rem;
+  margin: 0;
+}
+
+/* La grilla que separa los botones */
+.botones-grid {
+  display: flex;
+  gap: 3rem; /* Espacio entre los dos botones */
+  flex-wrap: wrap; /* Para que bajen si la pantalla de celular es muy chica */
+  justify-content: center;
+}
+
+/* Estilo de los botones cuadrados */
+.btn-cuadrado {
+  width: 250px;
+  height: 250px; /* Ancho y alto iguales = Cuadrado perfecto */
+  background-color: #1e293b;
+  border: 2px solid #334155;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  color: #f8fafc;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.btn-cuadrado:hover {
+  border-color: #38bdf8; /* Tu color celeste */
+  transform: translateY(-8px); /* Efecto de levitación */
+  box-shadow: 0 20px 25px -5px rgba(56, 189, 248, 0.2);
+}
+
+.icono {
+  font-size: 5rem; /* Icono gigante */
+  margin-bottom: 1rem;
+}
+
+.btn-cuadrado h3 {
+  margin: 0 0 0.5rem 0;
+  font-size: 1.5rem;
+  color: #38bdf8;
+}
+
+.btn-cuadrado p {
+  margin: 0;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 0 1rem;
+}

@@ -1,0 +1,31 @@
+<div class="overlay" (click)="cerrar.emit()">
+  
+  <!-- Evitamos que hacer clic dentro del cuadro cierre el modal -->
+  <div class="modal-resenas" (click)="$event.stopPropagation()">
+    
+    <div class="modal-header">
+      <h3>Reseñas de <span>{{ tituloPelicula }}</span></h3>
+      <button class="btn-cerrar" (click)="cerrar.emit()">✕</button>
+    </div>
+
+    <div class="lista-comentarios">
+      
+      @if (resenas && resenas.length > 0) {
+        @for (resena of resenas; track $index) {
+          <div class="comentario-card">
+            <div class="comentario-header">
+              <span class="estrellitas">⭐ {{ resena.puntuacion }}</span>
+            </div>
+            <p class="comentario-texto">"{{ resena.comentario }}"</p>
+          </div>
+        }
+      } @else {
+        <div class="sin-comentarios">
+          <p>Aún no hay comentarios para esta película. ¡Sé el primero en calificarla luego de verla!</p>
+        </div>
+      }
+
+    </div>
+  </div>
+
+</div>

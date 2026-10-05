@@ -181,3 +181,98 @@ h2 {
   font-size: 1.1rem;
   letter-spacing: 1px;
 }
+
+/* Botón en el historial */
+.btn-resena {
+  margin-top: 10px;
+  background-color: transparent;
+  color: #fbbf24; /* Color ámbar/dorado */
+  border: 1px solid #fbbf24;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+.btn-resena:hover {
+  background-color: rgba(251, 191, 36, 0.1);
+}
+
+/* Estilos del Overlay */
+.overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 10000;
+}
+
+.modal-resena {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  width: 90%;
+  max-width: 350px;
+  padding: 2rem;
+  color: #f8fafc;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  animation: popIn 0.2s ease-out;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.modal-resena h3 {
+  margin: 0 0 1.5rem 0;
+  color: #38bdf8;
+  text-align: center;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-group label {
+  font-size: 0.9rem;
+  color: #94a3b8;
+}
+
+/* Inputs adaptados a tu diseño */
+.input-custom {
+  background-color: #1e293b;
+  border: 1px solid #475569;
+  border-radius: 8px;
+  padding: 0.8rem;
+  color: white;
+  outline: none;
+  font-family: inherit;
+}
+.input-custom:focus {
+  border-color: #fbbf24;
+}
+.textarea-custom {
+  resize: none;
+}
+
+.acciones {
+  display: flex; gap: 1rem; margin-top: 1.5rem;
+}
+
+.btn-cancelar {
+  flex: 1; background: transparent; color: #94a3b8; 
+  border: 1px solid #475569; padding: 0.8rem; 
+  border-radius: 8px; cursor: pointer;
+}
+.btn-confirmar {
+  flex: 1; background: #fbbf24; color: #451a03; 
+  border: none; padding: 0.8rem; 
+  border-radius: 8px; cursor: pointer; font-weight: bold;
+}
+.btn-confirmar:hover { background: #f59e0b; }

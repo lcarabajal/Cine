@@ -25,52 +25,55 @@
         </div>
 
         <div class="form-group">
-          <label for="sala_id">Sala</label>
-          <select id="sala_id" formControlName="sala_id"
-          [class.input-error]="esCampoInvalido('sala_id')">
-            <option value="" disabled selected>Seleccione una sala...</option>
-            @for (s of salas(); track s.id) {
-              <option [value]="s.id">{{ s.numero }}</option>
+                
+            <label for="sala_id">Sala</label>
+            <select id="sala_id" formControlName="sala_id"
+            [class.input-error]="esCampoInvalido('sala_id')"
+            (change)="alCambiarSala($event)">
+              <option value="" disabled selected>Seleccione una sala...</option>
+              @for (s of salas(); track s.id) {
+                <option [value]="s.id">{{ s.numero }}</option>
+              }
+            </select>
+            @if (esCampoInvalido('sala_id')) {
+              <span class="error-text">Requerido</span>
             }
-          </select>
-          @if (esCampoInvalido('sala_id')) {
-            <span class="error-text">Requerido</span>
-          }
+            
+         
+            <button type="button" class="btn-aleatorio" (click)="elegirSalaAleatoria()">
+              🎲 Al azar
+            </button>
+          
         </div>
       </div>
 
       <!-- Fila 2: Fecha y Hora -->
       <div class="form-row">
         <div class="form-group">
-          <label for="fecha">Fecha de Proyección</label>
-          <input type="date" id="fecha" formControlName="fecha"
-           [class.input-error]="esCampoInvalido('fecha')"/>
-          @if (esCampoInvalido('fecha')) {
-            <span class="error-text">Requerido</span>
-          }
-        </div>
-
-        <div class="form-group">
-          <label for="hora_inicio">Hora de Inicio</label>
-          <input type="time" id="hora_inicio" formControlName="hora_inicio" 
-          [class.input-error]="esCampoInvalido('hora_inicio')"/>
-          @if (esCampoInvalido('hora_inicio')) {
-            <span class="error-text">Requerido</span>
-          }
+          <label for="fecha" >Fecha de la Función</label>
+          <button id="fecha" type="button" class="btn-input-falso" (click)="mostrarPicker.set(true)">
+            <!-- Solo texto visual, sin formControlName -->
+            📅 {{ funcionForm.get('fecha')?.value }} {{funcionForm.get('hora_inicio')?.value}}
+          </button>
         </div>
       </div>
-
+      <!-- El Overlay -->
+      @if (mostrarPicker()) {
+        <app-custom-datepicker 
+          (fechaConfirmada)="onFechaConfirmada($event)" 
+          (cerrar)="mostrarPicker.set(false)">
+        </app-custom-datepicker>
+      }
+     
       <!-- Fila 3: Formato, Idioma y Precio -->
       <div class="form-row">
         <div class="form-group">
-          <label for="formato">Formato</label>
-          <select id="formato" formControlName="formato"
-          [class.input-error]="esCampoInvalido('formato')">
-            <option value="2D">2D</option>
-            <option value="3D">3D</option>
-            <option value="4D">4D</option>
-            <option value="5D">5D</option>
-          </select>
+            <label>Formato</label>
+            <input 
+              type="text" 
+              class="input-custom input-bloqueado" 
+              formControlName="formato" 
+              readonly>
         </div>
 
         <div class="form-group">

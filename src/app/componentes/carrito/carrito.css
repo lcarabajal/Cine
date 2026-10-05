@@ -1,0 +1,100 @@
+/* Capa oscura de fondo */
+.carrito-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  z-index: 9999; /* Por encima de todo */
+  display: flex;
+  justify-content: flex-end; /* Manda el panel a la derecha */
+}
+
+/* Panel lateral del carrito */
+.carrito-drawer {
+  width: 100%;
+  max-width: 450px; /* Ancho máximo en PC */
+  height: 100vh;
+  background-color: #0f172a;
+  box-shadow: -5px 0 25px rgba(0,0,0,0.5);
+  display: flex;
+  flex-direction: column;
+  animation: slideInDerecha 0.3s ease-out;
+  color: #f8fafc;
+}
+
+@keyframes slideInDerecha {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.carrito-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem;
+  background-color: #1e293b;
+  border-bottom: 1px solid #334155;
+}
+
+.carrito-header h2 { margin: 0; font-size: 1.5rem; color: #38bdf8;}
+
+.btn-cerrar-drawer {
+  background: transparent;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: color 0.2s;
+}
+.btn-cerrar-drawer:hover { color: #ef4444; }
+
+/* Contenido con scroll */
+.carrito-body {
+  flex: 1; /* Toma todo el espacio disponible */
+  overflow-y: auto;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Diseño interno compacto */
+.seccion-carrito {
+  background-color: #1e293b;
+  border-radius: 8px;
+  padding: 1rem;
+}
+
+.titulo-seccion { margin-top: 0; font-size: 1.1rem; border-bottom: 1px dashed #475569; padding-bottom: 0.5rem;}
+
+.item-fila {
+  display: flex; justify-content: space-between; align-items: center;
+  padding: 0.8rem 0; border-bottom: 1px solid #334155;
+}
+.item-fila:last-child { border-bottom: none; }
+
+.detalle-chico { margin: 0; font-size: 0.85rem; color: #94a3b8; }
+.item-precio { font-weight: bold; color: #4ade80; display: flex; align-items: center; gap: 10px;}
+
+/* Footer fijado abajo */
+.carrito-footer {
+  padding: 1.5rem;
+  background-color: #1e293b;
+  border-top: 2px solid #38bdf8;
+}
+
+.totales { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;}
+.totales h2 { margin: 0; font-size: 1.3rem;}
+.monto-final { color: #4ade80; font-size: 1.8rem; }
+
+.btn-pagar {
+  width: 100%; padding: 1rem; background-color: #4ade80; color: #064e3b;
+  font-weight: bold; font-size: 1.1rem; border: none; border-radius: 8px; cursor: pointer;
+}
+
+.espacio{
+    padding:10px
+}

@@ -17,4 +17,8 @@ export interface Pelicula {
     precio: number;
     sala_id: number;
   }[];
+  resenas:{
+    puntuacion:number;
+    comentario:string;
+  }[]
 }

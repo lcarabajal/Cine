@@ -3,9 +3,10 @@ import { Auth } from '../../servicios/auth';
 import { DatePipe } from '@angular/common';
 import { RouterLink } from '@angular/router';
 import { HistorialAgrupado } from '../../interfaces/historial';
+import { FormsModule } from '@angular/forms';
 
 @Component({
-  imports: [DatePipe,RouterLink],
+  imports: [DatePipe,RouterLink,FormsModule],
   selector: 'app-historial-funciones',
   styleUrl: './historial-funciones.css',
   templateUrl: './historial-funciones.html',
@@ -14,6 +15,12 @@ export class HistorialFunciones implements OnInit {
   historial = signal<HistorialAgrupado[]>([]);
   auth= inject(Auth);
   usuarioIdActual : number  = 0; 
+
+  mostrarModalResena = signal<boolean>(false);
+  peliculaEnResena = signal<number | null>(null);
+
+  puntuacion = signal<number>(10);
+  comentario = signal<string>('');
 
   async ngOnInit(): Promise<void> {
     await this.cargarDatos();
@@ -36,6 +43,7 @@ export class HistorialFunciones implements OnInit {
           precio,
           estado,
           peliculas (
+            id,
             titulo,
             poster,
             duracion_min
@@ -82,5 +90,46 @@ export class HistorialFunciones implements OnInit {
     historialFinal.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime());
 
     this.historial.set(historialFinal);
+  }
+
+  abrirModalResena(idPelicula: number) {
+    this.peliculaEnResena.set(idPelicula);
+    this.puntuacion.set(10); // Valor por defecto
+    this.comentario.set(''); // Limpiamos el texto
+    this.mostrarModalResena.set(true);
+  }
+
+  cerrarModal() {
+    this.mostrarModalResena.set(false);
+    this.peliculaEnResena.set(null);
+  }
+
+  async enviarResena() {
+    if (!this.comentario().trim()) {
+      alert('Por favor, escribe un breve comentario.');
+      return;
+    }
+
+    try {
+       // Obtenemos el ID del usuario logueado
+
+      const { error } = await this.auth.supabase
+        .from('resenas')
+        .insert({
+          id_usuario: this.usuarioIdActual,
+          id_pelicula: this.peliculaEnResena(),
+          puntuacion: this.puntuacion(),
+          comentario: this.comentario()
+        });
+
+      if (error) throw error;
+
+      alert('¡Gracias por tu reseña!');
+      this.cerrarModal();
+
+    } catch (err) {
+      console.error(err);
+      alert('Hubo un error al guardar tu reseña.');
+    }
   }
 }

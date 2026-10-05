@@ -1,0 +1,145 @@
+<div class="candy-container">
+  <div class="header">
+    <h2>Gestión de Candy Bar 🍿</h2>
+  </div>
+
+  <div class="grid-candy">
+    
+    <!-- COLUMNA IZQUIERDA: LISTA Y PRECIOS -->
+    <div class="columna-listas">
+      <div class="panel">
+        <h3>Productos Individuales</h3>
+        <div class="lista-items">
+          @for (item of productos(); track item.id) {
+            <div class="item-card">
+              <div class="info">
+                <strong>{{ item.nombre }}</strong>
+                <small> Categoria: {{ item.categoria }}</small>
+              </div>
+              <div class="acciones">
+                <span class="signo">$</span>
+                <input type="number" class="input-precio" [(ngModel)]="item.precio">
+                <span class="signo">|</span>
+                <span class="signo">Stock</span>
+                <input type="number" class="input-precio" [(ngModel)]="item.stock">
+                <button class="btn-guardar" (click)="actualizarPrecio(item)">Actualizar</button>
+              </div>
+            </div>
+          }
+        </div>
+
+        <h3 class="mt-4">Combos Activos</h3>
+        <div class="lista-items">
+          @for (combo of combos(); track combo.id) {
+            <div class="item-card combo-card">
+              <div class="info">
+                <strong>{{ combo.nombre }}</strong>
+                <small>{{ combo.descripcion }}</small>
+              </div>
+              <div class="acciones">
+                <span class="signo">$</span>
+                <input type="number" class="input-precio" [(ngModel)]="combo.precio">
+                <button class="btn-guardar" (click)="actualizarPrecio(combo)">Actualizar</button>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- COLUMNA DERECHA: LOS CREADORES (APILADOS) -->
+    <div class="columna-creadores">
+      
+      <!-- CREADOR DE PRODUCTOS -->
+      <div class="panel creador-producto" [formGroup]="productoForm">
+        <h3>Registrar Nuevo Producto</h3>
+        
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label>Nombre *</label>
+            <input type="text" class="input-custom" formControlName="nombre" placeholder="Ej: Nachos">
+          </div>
+          <div class="form-group flex-1">
+            <label>Precio *</label>
+            <input type="number" class="input-custom" formControlName="precio" placeholder="3000">
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group flex-1">
+            <label>Categoría</label>
+            <select class="input-custom" formControlName="categoria">
+              <option value="Snacks">Snacks</option>
+              <option value="Dulces">Dulces</option>
+              <option value="Bebidas">Bebidas</option>
+            </select>
+          </div>
+          <div class="form-group flex-1">
+            <label>Stock</label>
+            <input type="number" class="input-custom" formControlName="stock" placeholder="0">
+          </div>
+        </div>
+
+        <div class="form-group flex-1">
+          <label>URL imagen</label>
+          <input type="text" class="input-custom" formControlName="imagen_url" placeholder="https://placehold">
+        </div>
+
+        <div class="form-group flex-1">
+          <label>Descripción</label>
+          <input type="text" class="input-custom" formControlName="descripcion" placeholder="Descripcion del producto">
+        </div>      
+
+        <div class="form-group switch-container">
+          <label class="switch-label">
+            <input type="checkbox" formControlName="activo">
+            <span>Producto Activo</span>
+          </label>
+        </div>
+
+
+        <button class="btn-crear-producto" (click)="crearProducto()" [disabled]="productoForm.invalid">
+          Registrar Producto
+        </button>
+      </div>
+
+      <!-- CREADOR DE COMBOS -->
+      <div class="panel creador-combo" [formGroup]="comboForm">
+        <h3>Armar Nuevo Combo</h3>
+        
+        <div class="form-row">
+          <div class="form-group flex-2">
+            <label>Nombre del Combo *</label>
+            <input type="text" class="input-custom" formControlName="nombre" placeholder="Ej: Combo Familiar">
+          </div>
+          <div class="form-group flex-1">
+            <label>Precio *</label>
+            <input type="number" class="input-custom" formControlName="precio" placeholder="8500">
+          </div>
+        </div>
+
+        <div class="form-group flex-1">
+          <label>URL Imagen</label>
+          <input type="text" class="input-custom" formControlName="imagen_url" placeholder="https://placehold">
+        </div>
+
+        <div class="form-group">
+          <label>Selecciona los productos que incluye:</label>
+          <div class="caja-seleccion">
+            @for (item of productos(); track item.id) {
+              <label class="checkbox-item">
+                <input type="checkbox" (change)="toggleProductoParaCombo(item, $event)">
+                <span>{{ item.nombre }} (Normal: ${{ item.precio }})</span>
+              </label>
+            }
+          </div>
+        </div>
+
+        <button class="btn-crear-combo" (click)="crearCombo()" [disabled]="comboForm.invalid || productosSeleccionados().length === 0">
+          Guardar Combo
+        </button>
+      </div>
+
+    </div>
+  </div>
+</div>

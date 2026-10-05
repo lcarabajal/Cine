@@ -1,45 +1,59 @@
-<div class="catalogo-wrapper">
-  @if (peliculasFiltradas().length === 0) {
-    <div class="sin-resultados">
-      <p>No se encontraron películas con el género seleccionado.</p>
-    </div>
-  } @else {
-    <div class="grid-peliculas">  
-      @for (peli of peliculasFiltradas(); track peli.id) {
-        <div class="tarjeta-pelicula">
-          <img [src]="peli.poster" [alt]="peli.titulo"/>
-          <h2>{{ peli.titulo }} </h2>
+<!-- ENVOLTORIO DEL CARRUSEL -->
+<div class="carrusel-wrapper">
+  
+  <!-- Botón Anterior (-1) -->
+  <button class="btn-carrusel prev" (click)="moverCarrusel(-1)">&#10094;</button>
 
-           <div class="movie-meta">
-              <span class="rating">⭐ {{ peli.puntuacion }}</span>
-              <span class="duracion">{{ peli.duracion_min | duracionHoras}}</span>
-            </div>
+  <!-- CONTENEDOR CON SCROLL (Referenciado con #carrusel) -->
+  <div class="carrusel-container" #carrusel>
+    
+    @for (peli of peliculasFiltradas(); track peli.id) {
+      <div class="peli-card">
+        
+        <!-- Contenedor de la portada -->
+        <div class="poster-container">
+          <img [src]="peli.poster" [alt]="peli.titulo">
+        </div>
 
-          <!-- Géneros múltiples -->
-          <div class="generos">
-            @for (item of peli.generos; track item.genero.nombre) {
-              <span class="badge">{{ item.genero.nombre }}</span>
-            }
+        <div class="peli-info">
+          <h3 class="textoCarrusel">{{ peli.titulo }}</h3>
+          <div class="movie-meta">
+           <span class="rating">⭐ {{ peli.puntuacion || "Sin Reseña"}}</span>
+           
+            <button class="btn-ver-opiniones" (click)="abrirOpiniones(peli.titulo, peli.resenas)">
+              
+              <span class="rating">🍿{{ peli.resenas | promedioResenas}}</span>
+            </button>
+           <span class="duracion-badge" class="textoCarrusel">👁 {{ peli.duracion_min | duracionHoras }}</span>
           </div>
-      
-          <!-- Múltiples horarios y formatos -->
-          <div class="funciones-disponibles">
-            <h4>Horarios y Funciones:</h4>
-            <div class="horarios-grid">
-              @for (f of peli.funciones; track f.id) {
-                <button class="btn-horario" (click)= abrirSala(f.id)>
-                  <span>{{ f.fecha_hora_inicio | date:'shortTime' }}</span>
-                  <small>{{ f.fecha_hora_inicio | date:"d 'de' MMMM" }}  </small>
-                  <small>{{ f.formato }} - {{ f.idioma }}</small>
-                </button>
+          
+            <div class="generos">
+              @for (item of peli.generos; track item.genero.nombre) {
+                <span class="badge">{{ item.genero.nombre }}</span>
               }
             </div>
+          <div class="horarios-grid">
+            @for (f of peli.funciones; track f.id) {
+              <!-- Al hacer clic, abre tu modal de la sala de cine -->
+              <button class="btn-horario" (click)="abrirSala(f.id, peli.titulo, f.fecha_hora_inicio, f.precio)">
+                <span>{{ f.fecha_hora_inicio | date:'shortTime' }}</span>
+                <small>{{ f.fecha_hora_inicio | date:"d 'de' MMMM" }}  </small>
+                <small>{{ f.idioma }}</small>
+                <small>{{ f.formato }}</small>
+              </button>
+            }
           </div>
         </div>
-      }
-    </div>
-  }
-      <!-- MODAL DE LA SALA DE CINE -->
+
+      </div>
+    }
+
+  </div>
+  <!-- Botón Siguiente (1) -->
+  <button class="btn-carrusel next" (click)="moverCarrusel(1)">&#10095;</button>
+
+
+    <!-- MODAL DE LA SALA DE CINE -->
   @if (funcionSeleccionada() !== null) {
     <div class="modal-overlay" (click)="cerrarSala()">
       
@@ -49,10 +63,21 @@
         <!-- Llamamos al componente hijo, pasamos el ID y escuchamos cuando pida cerrarse -->
         <app-sala-cine 
           [funcionId]="funcionSeleccionada()!" 
+          [peliculaTitulo]="tituloSeleccionado()"
+          [fechaFuncion]="fechaSeleccionada()"
+          [precioFuncion]="precioSeleccionado()"
           (cerrar)="cerrarSala()">
         </app-sala-cine>
 
       </div>
     </div>
+  }
+
+  @if (mostrarModalResenas()) {
+    <app-ver-resenas
+      [tituloPelicula]="tituloOverlay()"
+      [resenas]="resenasOverlay()"
+      (cerrar)="mostrarModalResenas.set(false)">
+    </app-ver-resenas>  
   }
 </div>

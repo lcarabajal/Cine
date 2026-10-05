@@ -1,0 +1,49 @@
+<!-- EL BUSCADOR SE QUEDA IGUAL (Tu contenedor principal) -->
+<div class="validador-container">
+  <div class="header-validacion">
+    <h2>Validación de Entradas 🎫</h2>
+    <p>Escanea un código QR o ingresa el código manualmente.</p>
+  </div>
+  <div class="buscador-box">
+    <input type="text" class="input-codigo" [(ngModel)]="codigoManual" (keyup.enter)="validarDesdeInput()">
+    <button class="btn-validar" (click)="validarDesdeInput()">Validar</button>
+  </div>
+</div>
+
+<!-- ============================================== -->
+<!-- EL OVERLAY FLOTANTE (Solo se muestra si hay respuesta) -->
+<!-- ============================================== -->
+@if (estadoValidacion() !== 'cargando') {
+  
+  <!-- El fondo oscuro semitransparente. Si hace clic afuera, se cierra -->
+  <div class="overlay-backdrop" (click)="cerrarOverlay()">
+    
+    <!-- La tarjeta flotante (ngClass cambia el color según el estado) -->
+    <!-- El event.stopPropagation() evita que se cierre si hace clic adentro de la tarjeta -->
+    <div class="overlay-card" [ngClass]="estadoValidacion()" (click)="$event.stopPropagation()">
+      
+      @if (estadoValidacion() === 'valido') {
+        <div class="icono-circulo verde">
+          <span class="icono-check">✓</span>
+        </div>
+        <h2>Acceso Permitido</h2>
+        
+        <!-- Aquí puedes poner los datos de la película (como se veía en tu imagen) -->
+        <div class="info-entrada">
+     
+          <!-- Supongamos que tienes una variable que guarda el nombre. Si no, ajusta esto -->
+          <h3>{{ mensaje() }}</h3> 
+        </div>
+        
+      } @else if (estadoValidacion() === 'invalido') {
+        <div class="icono-circulo rojo">
+          <span class="icono-x">✕</span>
+        </div>
+        <h2>Acceso Denegado</h2>
+        <p class="error-msg">{{ mensaje() }}</p>
+      }
+
+      <button class="btn-siguiente" (click)="cerrarOverlay()">Escanear siguiente</button>
+    </div>
+  </div>
+}

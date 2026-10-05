@@ -59,6 +59,10 @@
                 Comprado el:<br>
                 {{ item.created_at | date:'shortDate' }}
               </span>
+
+              <button class="btn-resena" (click)="abrirModalResena(item.funciones.peliculas.id)">
+                ⭐ Dejar Reseña
+              </button>
             </div>
             
           </li>
@@ -67,3 +71,41 @@
     }
   </div>
 </div>
+
+<!-- OVERLAY DE RESEÑAS -->
+@if (mostrarModalResena()) {
+  <div class="overlay" (click)="cerrarModal()">
+    
+    <!-- Evitamos que el click adentro cierre el modal -->
+    <div class="modal-resena" (click)="$event.stopPropagation()">
+      <h3>Calificar Película</h3>
+      
+      <div class="form-group">
+        <label>Puntuación (1.0 a 10.0)</label>
+        <input 
+          type="number" 
+          step="0.1" 
+          min="1" 
+          max="10" 
+          class="input-custom"
+          [(ngModel)]="puntuacion">
+      </div>
+
+      <div class="form-group">
+        <label>Comentario Corto</label>
+        <textarea 
+          class="input-custom textarea-custom" 
+          rows="3" 
+          maxlength="150"
+          placeholder="Ej: muy bueno me gusto"
+          [(ngModel)]="comentario"></textarea>
+      </div>
+
+      <div class="acciones">
+        <button class="btn-cancelar" (click)="cerrarModal()">Cancelar</button>
+        <button class="btn-confirmar" (click)="enviarResena()">Enviar</button>
+      </div>
+    </div>
+
+  </div>
+}

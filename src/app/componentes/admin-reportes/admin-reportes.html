@@ -1,0 +1,23 @@
+<div class="reportes-container">
+  <h2>Panel de Reportes 📊</h2>
+
+  <!-- Facturación diaria y entradas -->
+  <div class="resumen-tarjetas">
+    <div class="card-metrica">
+      <h3>Entradas Hoy</h3>
+      <p class="numero">{{ entradasHoy() }}</p>
+    </div>
+    <!-- Le agregamos la clase 'facturacion' para que el borde sea verde -->
+    <div class="card-metrica facturacion">
+      <h3>Facturación Hoy</h3>
+      <p class="numero">${{ facturacionHoy() }}</p>
+    </div>
+  </div>
+
+  <!-- Botones de Exportación -->
+  <div class="acciones-exportar">
+    <button class="btn-exportar btn-pdf" (click)="exportarPDF()">📄 Descargar PDF</button>
+    <button class="btn-exportar btn-excel" (click)="exportarExcel()">📊 Descargar Excel</button>
+  </div>
+
+</div>

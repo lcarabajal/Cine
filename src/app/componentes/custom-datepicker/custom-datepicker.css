@@ -1,0 +1,79 @@
+.overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background-color: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(4px);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 10000;
+}
+
+.picker-modal {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  width: 340px;
+  padding: 1.5rem;
+  color: #f8fafc;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+  animation: popIn 0.2s ease-out;
+}
+
+@keyframes popIn {
+  from { transform: scale(0.9); opacity: 0; }
+  to { transform: scale(1); opacity: 1; }
+}
+
+.picker-header {
+  display: flex; justify-content: space-between; align-items: center;
+  margin-bottom: 1rem;
+}
+
+.picker-header h3 { margin: 0; font-size: 1.2rem; color: #38bdf8; }
+
+.btn-nav {
+  background: #1e293b; color: white; border: none; 
+  border-radius: 50%; width: 35px; height: 35px; cursor: pointer;
+  display: flex; justify-content: center; align-items: center;
+}
+.btn-nav:hover { background: #38bdf8; color: #0f172a; }
+
+.calendario-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  text-align: center;
+}
+
+.dia-semana {
+  font-size: 0.8rem; color: #94a3b8; font-weight: bold; margin-bottom: 0.5rem;
+}
+
+.btn-dia {
+  background: transparent; color: #e0f2fe; border: 1px solid transparent;
+  padding: 8px 0; border-radius: 8px; cursor: pointer; transition: all 0.2s;
+  font-weight: 600;
+}
+.btn-dia:hover { border-color: #38bdf8; background-color: rgba(56, 189, 248, 0.1); }
+.btn-dia.activo { background-color: #38bdf8; color: #0f172a; }
+
+.divisor { border: 0; border-top: 1px dashed #334155; margin: 1.5rem 0; }
+
+.horario-section {
+  display: flex; justify-content: space-between; align-items: center;
+  font-weight: bold; margin-bottom: 1.5rem;
+}
+
+.time-inputs { display: flex; align-items: center; gap: 0.5rem; }
+.dos-puntos { font-size: 1.2rem; font-weight: bold; }
+
+.custom-select {
+  background-color: #1e293b; color: white; border: 1px solid #475569;
+  padding: 0.5rem; border-radius: 6px; outline: none; font-size: 1.1rem;
+  cursor: pointer;
+}
+.custom-select:focus { border-color: #38bdf8; }
+
+.acciones { display: flex; justify-content: space-between; gap: 1rem; }
+.btn-cancelar { flex: 1; background: transparent; color: #94a3b8; border: 1px solid #475569; padding: 0.8rem; border-radius: 8px; cursor: pointer; }
+.btn-confirmar { flex: 1; background: #4ade80; color: #064e3b; border: none; padding: 0.8rem; border-radius: 8px; cursor: pointer; font-weight: bold; }
+

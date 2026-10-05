@@ -82,7 +82,7 @@
     <button class="btn-cancelar" (click)="cancelar()">Cancelar</button>
     <button class="btn-comprar" 
             [disabled]="asientosSeleccionados.length === 0"
-            (click)="confirmarCompra(this.usuarioID!)"> <!-- Pasa el ID de tu usuario real -->
+            (click)="confirmarCompra()"> 
       Comprar {{ asientosSeleccionados.length }} Asiento(s)
     </button>
   </div>

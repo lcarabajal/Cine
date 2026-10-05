@@ -1,21 +1,35 @@
-import { Component, computed, inject, input, OnInit, signal } from '@angular/core';
+import { Component, computed, ElementRef, inject, input, OnInit, signal, ViewChild } from '@angular/core';
 import { Pelicula } from '../../interfaces/Pelicula';
-import { DuracionHorasPipe } from '../../pipes/duracion-horas-pipe';
 import { Auth } from '../../servicios/auth';
 import { DatePipe } from '@angular/common';
 import { SalaCine } from '../sala-cine/sala-cine';
+import { DuracionHorasPipe } from '../../pipes/duracion-horas-pipe';
+import { PromedioResenasPipe } from '../../pipes/promedio-resenas-pipe';
+import { VerResenas } from '../ver-resenas/ver-resenas';
 
 @Component({
-  imports: [DuracionHorasPipe, DatePipe, SalaCine],
+  imports: [DatePipe,VerResenas, SalaCine, DuracionHorasPipe, PromedioResenasPipe],
+  standalone:true,
   selector: 'app-catalogo-peliculas',
   styleUrl: './catalogo-peliculas.css',
   templateUrl: './catalogo-peliculas.html',
 })
 export class CatalogoPeliculas implements OnInit{
   auth = inject(Auth);
+  
   filtroGenero = input<string>('');
   peliculas = signal<Pelicula[]>([]);
   funcionSeleccionada = signal<number | null>(null);
+  tituloSeleccionado = signal<string>('');
+  fechaSeleccionada = signal<string>('');
+  precioSeleccionado = signal<number>(0);
+  mostrarSala = signal<boolean>(false);
+
+  mostrarModalResenas = signal<boolean>(false);
+  resenasOverlay = signal<any[]>([]);
+  tituloOverlay = signal<string>('');
+  
+  @ViewChild('carrusel') carruselRef!: ElementRef;
 
   //es una señal computada reactiva y memoizada que genera una señal derivada de solo lectura
   peliculasFiltradas = computed(() => {
@@ -41,7 +55,7 @@ export class CatalogoPeliculas implements OnInit{
         generos:pelicula_generos (
           genero:generos ( nombre )
         ),
-        funciones!inner (
+        funciones (
           id,
           fecha_hora_inicio,
           formato,
@@ -49,6 +63,10 @@ export class CatalogoPeliculas implements OnInit{
           precio,
           sala_id,
           estado
+        ),
+        resenas (
+          puntuacion,
+          comentario
         )
       `)
       .eq('funciones.estado', 'libre');
@@ -63,11 +81,38 @@ export class CatalogoPeliculas implements OnInit{
     console.log(this.peliculas());
   }
 
-  abrirSala(idFuncion: number): void {
-    this.funcionSeleccionada.set(idFuncion);
+  moverCarrusel(direccion: number): void {
+    if (this.carruselRef) {
+      const contenedor = this.carruselRef.nativeElement;
+      // Ajusta este 320 según el ancho de tu tarjeta + el espacio (gap)
+      const distanciaDesplazamiento = 320; 
+      
+      contenedor.scrollBy({ 
+        left: distanciaDesplazamiento * direccion, 
+        behavior: 'smooth' // Movimiento suave
+      });
+    }
+  }
+
+  abrirSala(funcionId: number, titulo: string, fecha: string, precio: number): void {
+    this.funcionSeleccionada.set(funcionId); 
+    
+    // Guardamos los datos nuevos
+    this.tituloSeleccionado.set(titulo);
+    this.fechaSeleccionada.set(fecha);
+    this.precioSeleccionado.set(precio);
+    
+    // Abrimos el modal
+    this.mostrarSala.set(true); 
   }
 
   cerrarSala(): void {
     this.funcionSeleccionada.set(null);
+  }
+
+  abrirOpiniones(titulo: string, resenas: any[]) {
+    this.tituloOverlay.set(titulo);
+    this.resenasOverlay.set(resenas || []);
+    this.mostrarModalResenas.set(true);
   }
 }

@@ -1,11 +1,12 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { Auth } from '../../servicios/auth';
 import { CommonModule } from '@angular/common';
+import { CustomDatepicker } from '../custom-datepicker/custom-datepicker';
 
 @Component({
-  imports: [CommonModule,ReactiveFormsModule,RouterModule],
+  imports: [CommonModule,ReactiveFormsModule,RouterModule,CustomDatepicker],
   selector: 'app-register',
   styleUrl: './register.css',
   templateUrl: './register.html',
@@ -17,6 +18,9 @@ export class Register {
 
   mostrarClave: boolean = false;
   sinCoincidencia: boolean = false; 
+
+  mostrarPicker = signal(false);
+  fechaElegida = signal<Date | null>(null);
 
   tiposDeSangre: string[] = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
   coloresDeOjo: string[] = ['Marrón', 'Azul', 'Verde', 'Miel / Ámbar', 'Gris', 'Negro', 'Otro'];
@@ -39,12 +43,31 @@ export class Register {
     return !!(campo?.invalid && campo.touched)
   }
 
+  onFechaConfirmada(fechaCompleta: Date) {
+    // 1. Guardamos el dato en el Signal (como ya lo tenías)
+    this.fechaElegida.set(fechaCompleta);
+
+    // 2. Desarmamos el objeto Date que recibimos del componente
+    const anio = fechaCompleta.getFullYear();
+    const mes = String(fechaCompleta.getMonth() + 1).padStart(2, '0');
+    const dia = String(fechaCompleta.getDate()).padStart(2, '0');
+    const fechaSQL = `${anio}-${mes}-${dia}`; 
+
+    // 3. Inyectamos los datos desarmados en los controles exactos de tu formulario
+    this.registerForm.patchValue({
+      fechaDeNacimiento: fechaSQL,
+    });
+    
+    // 4. Le avisamos al formulario que estos campos ya fueron completados
+    this.registerForm.get('fechaDeNacimiento')?.markAsDirty();
+  }
+
   cambiarVisibilidadClave(): void {
     this.mostrarClave = !this.mostrarClave;
   }
 
   async guardar(){
-    if(this.registerForm.invalid){
+    if(this.registerForm.invalid || this.registerForm.get('clave')!.value !== this.registerForm.get('claveAConfirmar')!.value ){
       this.registerForm.markAllAsTouched();
       return
     }

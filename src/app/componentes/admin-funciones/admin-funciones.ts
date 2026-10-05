@@ -4,10 +4,11 @@ import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { Auth } from '../../servicios/auth';
 import { Pelicula } from '../../interfaces/Pelicula';
 import { Sala } from '../../interfaces/sala';
+import { CustomDatepicker } from '../custom-datepicker/custom-datepicker';
 
 @Component({
   selector: 'app-admin-funciones',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule,CustomDatepicker],
   templateUrl: './admin-funciones.html',
   styleUrls: ['./admin-funciones.css']
 })
@@ -18,6 +19,10 @@ export class AdminFunciones implements OnInit {
   peliculas = signal<Pelicula[]>([]);
   salas = signal<Sala[]>([]);
   
+
+  mostrarPicker = signal(false);
+  fechaElegida = signal<Date | null>(null);
+
   isLoading = false;
   mensajeError = signal<string>('');
   mensajeExito = signal<string>('');
@@ -38,6 +43,41 @@ export class AdminFunciones implements OnInit {
     await this.cargarDatosBase();
   }
 
+ 
+  alCambiarSala(event: any) {
+    const idSala = Number(event.target.value);
+    this.actualizarFormato(idSala);
+  }
+
+  // 1. Nueva función para el botón aleatorio
+  elegirSalaAleatoria() {
+    // Genera un número entero aleatorio entre 1 y 4
+    const salaRandom = Math.floor(Math.random() * 4) + 1;
+
+   
+    this.funcionForm.patchValue({
+      sala_id: salaRandom.toString()
+    });
+
+    this.actualizarFormato(salaRandom);
+  }
+
+  private actualizarFormato(idSala: number) {
+    let formatoAsignado = '';
+    
+    switch (idSala) {
+      case 1: formatoAsignado = '2D'; break;
+      case 2: formatoAsignado = '3D'; break;
+      case 3: formatoAsignado = '4D'; break;
+      case 4: formatoAsignado = '5D'; break;
+      default: formatoAsignado = '2D'; break;
+    }
+
+    this.funcionForm.patchValue({
+      formato: formatoAsignado
+    });
+  }
+
   // Carga los selectores iniciales
   async cargarDatosBase(): Promise<void> {
     const [reqPeliculas, reqSalas] = await Promise.all([
@@ -54,7 +94,35 @@ export class AdminFunciones implements OnInit {
     return !!(campo?.invalid && campo.touched)
   }
 
+  
+  onFechaConfirmada(fechaCompleta: Date) {
+    // 1. Guardamos el dato en el Signal (como ya lo tenías)
+    this.fechaElegida.set(fechaCompleta);
+
+    // 2. Desarmamos el objeto Date que recibimos del componente
+    const anio = fechaCompleta.getFullYear();
+    const mes = String(fechaCompleta.getMonth() + 1).padStart(2, '0');
+    const dia = String(fechaCompleta.getDate()).padStart(2, '0');
+    const fechaSQL = `${anio}-${mes}-${dia}`; 
+
+    const horas = String(fechaCompleta.getHours()).padStart(2, '0');
+    const minutos = String(fechaCompleta.getMinutes()).padStart(2, '0');
+    const horaSQL = `${horas}:${minutos}`; 
+
+    // 3. Inyectamos los datos desarmados en los controles exactos de tu formulario
+    this.funcionForm.patchValue({
+      fecha: fechaSQL,
+      hora_inicio: horaSQL
+    });
+    
+    // 4. Le avisamos al formulario que estos campos ya fueron completados
+    this.funcionForm.get('fecha')?.markAsDirty();
+    this.funcionForm.get('hora_inicio')?.markAsDirty();
+  }
+
   async onSubmit(): Promise<void> {
+    console.log('¿Formulario Válido?:', this.funcionForm.valid);
+    console.log('Datos actuales:', this.funcionForm.value);
     if (this.funcionForm.invalid) {
       this.funcionForm.markAllAsTouched();
       return;
@@ -88,11 +156,13 @@ export class AdminFunciones implements OnInit {
       .lt('fecha_hora_inicio', finDia.toISOString());
 
     if (errConsulta) {
+      console.log(errConsulta);
       this.mensajeError.set('Error al verificar disponibilidad de la sala.');
       this.isLoading = false;
       return;
     }
 
+   
     //Lógica de validación: Margen de 30 minutos
     let hayConflicto = false;
     for (const func of (funcionesExistentes || [])) {
@@ -115,10 +185,13 @@ export class AdminFunciones implements OnInit {
       this.mensajeError.set('Error: La sala está ocupada o no se respeta el margen de 30 minutos entre funciones.');
       this.isLoading = false;
       
-      console.log("Esto SI deberia de llegar acá");
-      console.log(this.isLoading);
+      
       return;
     }
+
+    const id_admin = await this.auth.getId();
+
+    console.log(id_admin);
 
     // 5. Inserción si todo es válido
     const { error: errInsert } = await this.auth.supabase.from('funciones').insert({
@@ -128,7 +201,8 @@ export class AdminFunciones implements OnInit {
       fecha_hora_fin: fin.toISOString(),
       formato: values.formato,
       idioma: values.idioma,
-      precio: values.precio
+      precio: values.precio,
+      id_admin: id_admin
     });
 
     this.isLoading = false;
@@ -138,6 +212,11 @@ export class AdminFunciones implements OnInit {
     } else {
       this.mensajeExito.set('Función programada exitosamente.');
       this.funcionForm.reset({ formato: '2D', idioma: 'Castellano' });
+
+      this.auth.registrarAuditoria(
+        'Creacion de funcion nueva', 
+        `Se Creo una nueva función`
+      );
     }
 
   }

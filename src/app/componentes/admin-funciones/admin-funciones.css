@@ -48,7 +48,7 @@ label {
   color: #cbd5e1;
 }
 
-input, select {
+input, select, button {
   width: 100%;
   padding: 0.75rem;
   border-radius: 8px;
@@ -118,9 +118,50 @@ input[type="time"]::-webkit-calendar-picker-indicator {
   cursor: not-allowed;
 }
 
+/* Agrega esto a tu archivo CSS */
+.input-bloqueado {
+  background-color: #1e293b; /* Fondo un poco más oscuro/apagado */
+  color: #64748b; /* Texto color gris claro */
+  border: 1px solid #334155; /* Borde gris apagado */
+  cursor: not-allowed; /* Muestra el icono 🚫 al pasar el mouse */
+  pointer-events: none; /* Bloquea cualquier intento de clic */
+  user-select: none; /* Evita que el usuario pueda seleccionar el texto */
+}
+
 @media (max-width: 600px) {
   .form-row {
     flex-direction: column;
     gap: 1.25rem;
   }
+}
+
+.btn-aleatorio {
+  background-color: #38bdf8; /* Tu color celeste */
+  color: #0f172a; /* Texto oscuro para contrastar */
+  border: none;
+  padding: 0 1rem;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn-aleatorio:hover {
+  background-color: #0ea5e9; /* Un celeste un poco más oscuro al pasar el mouse */
+  transform: translateY(-2px);
+}
+
+.btn-aleatorio:active {
+  transform: translateY(0); /* Efecto de "click" */
+}
+.input-con-boton {
+  display: flex;
+  gap: 10px; /* Espacio entre el select y el botón */
+}
+
+.input-con-boton select {
+  flex: 1; /* Esto hace que el select ocupe todo el espacio sobrante */
 }
