@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Auth } from '../../servicios/auth';
 import { Genero } from '../../interfaces/genero';
+import { RouterLink } from '@angular/router';
 
 
 @Component({
   selector: 'app-admin-peliculas',
-  imports: [CommonModule,ReactiveFormsModule],
+  imports: [CommonModule,ReactiveFormsModule,RouterLink],
   templateUrl: './admin-peliculas.html',
   styleUrls: ['./admin-peliculas.css']
 })
@@ -17,7 +18,6 @@ export class AdminPeliculas implements OnInit {
   peliculaForm: FormGroup;
   generosDisponibles = signal<Genero[]>([]);
 
-  
   isLoading = false;
   mensajeError: string | null = null;
   mensajeExito: string | null = null;
@@ -30,6 +30,7 @@ export class AdminPeliculas implements OnInit {
       poster: ['', Validators.required],
       puntuacion: ['', [Validators.required, Validators.min(0), Validators.max(10)]],
       clasificacion_edad: ['ATP', Validators.required],
+      proximamente: [true],
       generos_seleccionados: [[], Validators.required] 
     });
   }
@@ -72,7 +73,8 @@ export class AdminPeliculas implements OnInit {
         duracion_min: values.duracion_min,
         poster: values.poster,
         puntuacion: values.puntuacion,
-        clasificacion_edad: values.clasificacion_edad
+        clasificacion_edad: values.clasificacion_edad,
+        proximamente:values.proximamente
       })
       .select('id')
       .single();

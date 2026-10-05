@@ -1,0 +1,117 @@
+.log-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header h2 {
+  color: #f8fafc;
+  margin-bottom: 0.5rem;
+}
+
+.header p {
+  color: #94a3b8;
+  margin-bottom: 2rem;
+}
+
+/* --- ESTILOS DE LA TABLA --- */
+.tabla-container {
+  background-color: #0f172a;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  overflow: hidden; /* Para que los bordes redondeados se mantengan */
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+}
+
+.tabla-logs {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.tabla-logs th {
+  background-color: #1e293b;
+  color: #94a3b8;
+  padding: 1rem;
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 0.85rem;
+  letter-spacing: 1px;
+  border-bottom: 2px solid #334155;
+}
+
+.tabla-logs td {
+  padding: 1rem;
+  color: #e2e8f0;
+  border-bottom: 1px solid #1e293b;
+}
+
+/* Efecto hover en la fila */
+.tabla-logs tbody tr:hover {
+  background-color: #1e293b;
+}
+
+.fecha {
+  color: #94a3b8 !important;
+  font-family: monospace;
+  font-size: 0.95rem;
+}
+
+.usuario {
+  color: #64748b !important;
+  font-family: monospace;
+  cursor: help; /* Muestra signo de interrogación al pasar el mouse */
+}
+
+.detalles {
+  color: #cbd5e1 !important;
+  line-height: 1.4;
+}
+
+/* --- ETIQUETAS (BADGES) --- */
+.badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  display: inline-block;
+  white-space: nowrap;
+}
+
+/* Colores según la acción */
+.badge-verde {
+  background-color: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+  border: 1px solid #10b981;
+}
+
+.badge-amarillo {
+  background-color: rgba(251, 191, 36, 0.15);
+  color: #fbbf24;
+  border: 1px solid #fbbf24;
+}
+
+.badge-celeste {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  border: 1px solid #38bdf8;
+}
+
+.badge-rojo {
+  background-color: rgba(239, 68, 68, 0.15);
+  color: #ef4444;
+  border: 1px solid #ef4444;
+}
+
+.badge-gris {
+  background-color: rgba(148, 163, 184, 0.15);
+  color: #94a3b8;
+  border: 1px solid #94a3b8;
+}
+
+.texto-vacio {
+  text-align: center;
+  padding: 3rem !important;
+  color: #64748b !important;
+  font-style: italic;
+}

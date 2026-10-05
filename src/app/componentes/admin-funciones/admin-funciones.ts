@@ -5,10 +5,11 @@ import { Auth } from '../../servicios/auth';
 import { Pelicula } from '../../interfaces/Pelicula';
 import { Sala } from '../../interfaces/sala';
 import { CustomDatepicker } from '../custom-datepicker/custom-datepicker';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-funciones',
-  imports: [CommonModule, ReactiveFormsModule,CustomDatepicker],
+  imports: [CommonModule, ReactiveFormsModule,CustomDatepicker,RouterLink],
   templateUrl: './admin-funciones.html',
   styleUrls: ['./admin-funciones.css']
 })

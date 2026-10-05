@@ -45,7 +45,7 @@
   color: #93c5fd;
   font-size: 0.75rem;
   font-weight: 600;
-  padding: 0.25rem 0.6rem;
+  padding: 0.27rem 0.8rem;
   border-radius: 9999px;
   letter-spacing: 0.025em;
 }
@@ -271,3 +271,121 @@
 .btn-ver-opiniones:hover{
   text-decoration:underline; 
 }
+
+.top-peliculas-container {
+  margin: 2rem 0 4rem 0;
+}
+
+.titulo-seccion {
+  color: #f8fafc;
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  border-left: 4px solid #ef4444; /* Línea roja para destacar "En tendencia" */
+  padding-left: 10px;
+}
+
+.grid-top-peliculas {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.card-peli-top {
+  position: relative;
+  background-color: #1e293b;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+}
+
+.card-peli-top:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 20px 25px -5px rgba(56, 189, 248, 0.2);
+}
+
+/* La medalla de TOP en la esquina superior izquierda */
+.badge-top {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  background-color: #ef4444; /* Rojo vibrante */
+  color: white;
+  font-weight: 900;
+  font-size: 1.2rem;
+  padding: 0.3rem 0.8rem;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+  z-index: 2;
+}
+
+.poster-peli {
+  width: 100%;
+  height: 320px;
+  object-fit: contain;
+  border-bottom: 3px solid #f83838;
+}
+
+.info-peli {
+  padding: 1.2rem;
+  display: flex;
+  flex-direction: column;
+  flex: 1; /* Ocupa el resto del espacio disponible */
+}
+
+.info-peli h3 {
+  color: #f8fafc;
+  margin: 0 0 0.5rem 0;
+  font-size: 1.2rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.info-peli .detalle {
+  color: #94a3b8;
+  font-size: 0.85rem;
+  margin: 0 0 1rem 0;
+}
+
+.tickets-badge {
+  background-color: rgba(56, 189, 248, 0.15);
+  color: #38bdf8;
+  padding: 0.4rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+  display: inline-block;
+  margin-bottom: 1.5rem;
+}
+
+/* --- ESTILOS PARA LA LEYENDA +18 --- */
+.leyenda-adultos {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  background-color: rgba(239, 68, 68, 0.1); /* Fondo rojizo translúcido */
+  border: 1px solid rgba(239, 68, 68, 0.4); /* Borde rojo sutil */
+  border-radius: 8px;
+  padding: 0.8rem;
+  margin-bottom: 1rem;
+}
+
+.leyenda-adultos .icono-alerta {
+  font-size: 1.2rem;
+  line-height: 1;
+}
+
+.leyenda-adultos p {
+  color: #fca5a5; /* Texto rojo claro para contrastar con el fondo oscuro */
+  font-size: 0.85rem;
+  line-height: 1.4;
+  margin: 0;
+}
+
+.leyenda-adultos strong {
+  color: #ef4444; /* Rojo vibrante para el texto de Atención */
+}
+

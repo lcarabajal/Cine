@@ -19,11 +19,13 @@ export class CatalogoPeliculas implements OnInit{
   
   filtroGenero = input<string>('');
   peliculas = signal<Pelicula[]>([]);
+  peliculasTop = signal<Pelicula[]>([]);
   funcionSeleccionada = signal<number | null>(null);
   tituloSeleccionado = signal<string>('');
   fechaSeleccionada = signal<string>('');
   precioSeleccionado = signal<number>(0);
   mostrarSala = signal<boolean>(false);
+  salaIdSeleccionado= signal<number | null>(null);
 
   mostrarModalResenas = signal<boolean>(false);
   resenasOverlay = signal<any[]>([]);
@@ -43,7 +45,14 @@ export class CatalogoPeliculas implements OnInit{
     );
   });
 
+  requiereAdulto(clasificacion: string): boolean {
+    if (!clasificacion) return false;
+    // Convierte a minúsculas y busca si incluye "18"
+    return clasificacion.toLowerCase().includes('18'); 
+  }
+
   async ngOnInit(): Promise<void> {
+
     const { data, error } = await this.auth.supabase
       .from('peliculas')
       .select(`
@@ -52,6 +61,8 @@ export class CatalogoPeliculas implements OnInit{
         duracion_min,
         poster,
         puntuacion,
+        proximamente,
+        clasificacion_edad,
         generos:pelicula_generos (
           genero:generos ( nombre )
         ),
@@ -77,8 +88,61 @@ export class CatalogoPeliculas implements OnInit{
     }
 
     this.peliculas.set(data as unknown as Pelicula[]) ?? [];
-    console.log("Estos son las peliculas");
-    console.log(this.peliculas());
+    this.cargarPeliculasMasVendidas();
+  }
+
+  async cargarPeliculasMasVendidas() {
+    // 1. Traemos el historial completo cruzando hasta la tabla películas
+    const { data, error } = await this.auth.supabase
+      .from('historial_funciones')
+      .select(`
+        funciones (
+          peliculas (
+            id,
+            titulo,
+            poster,
+            sinopsis,
+            duracion_min,
+            clasificacion_edad
+          )
+        )
+      `);
+
+    if (error) {
+      console.error('Error al cargar top películas:', error);
+      return;
+    }
+
+    if (data) {
+      // 2. Diccionario para agrupar las películas por su ID
+      // Guardaremos la info de la película y un contador de tickets
+      const conteoPeliculas: { [idPelicula: number]: { infoPeli: any, tickets: number } } = {};
+
+      data.forEach((fila: any) => {
+        const pelicula = fila.funciones?.peliculas;
+        
+        if (pelicula) {
+          if (!conteoPeliculas[pelicula.id]) {
+            // Si es la primera vez que la vemos, la agregamos al diccionario
+            conteoPeliculas[pelicula.id] = { infoPeli: pelicula, tickets: 0 };
+          }
+          // Sumamos 1 ticket vendido a esta película
+          conteoPeliculas[pelicula.id].tickets++;
+        }
+      });
+
+      // 3. Convertir el diccionario en un Array, ordenarlo de mayor a menor y tomar las 5 primeras
+      const ranking = Object.values(conteoPeliculas)
+        .sort((a, b) => b.tickets - a.tickets) // Orden descendente
+        .slice(0, 3) // Nos quedamos solo con el Top 3
+        .map(item => ({
+          ...item.infoPeli, // Esparcimos los datos (id, titulo, poster, etc.)
+          ticketsVendidos: item.tickets // Agregamos este dato extra por si lo queremos mostrar
+        }));
+
+      // 4. Guardamos en la señal para que el HTML la dibuje
+      this.peliculasTop.set(ranking);
+    }
   }
 
   moverCarrusel(direccion: number): void {
@@ -94,13 +158,14 @@ export class CatalogoPeliculas implements OnInit{
     }
   }
 
-  abrirSala(funcionId: number, titulo: string, fecha: string, precio: number): void {
+  abrirSala(funcionId: number, titulo: string, fecha: string, precio: number,sala_id:number): void {
     this.funcionSeleccionada.set(funcionId); 
     
     // Guardamos los datos nuevos
     this.tituloSeleccionado.set(titulo);
     this.fechaSeleccionada.set(fecha);
     this.precioSeleccionado.set(precio);
+    this.salaIdSeleccionado.set(sala_id);
     
     // Abrimos el modal
     this.mostrarSala.set(true); 

@@ -7,6 +7,7 @@ export interface TicketCarrito {
   fecha: string;
   asientos: string[];
   precioUnitario: number;
+  sala_id:number;
 }
 
 export interface CandyCarrito {

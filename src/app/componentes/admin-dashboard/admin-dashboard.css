@@ -6,7 +6,11 @@
   justify-content: center;
   min-height: 100vh; /* Usa el 80% del alto de la pantalla */
   padding: 2rem;
-  background-color: #1f4252;
+  background-color: #0b212b;
+}
+
+.navbar{
+  background-color: #1e293b;
 }
 
 .header {

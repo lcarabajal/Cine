@@ -1,4 +1,28 @@
 <!-- ENVOLTORIO DEL CARRUSEL -->
+ <!-- SECCIÓN: LAS MÁS VISTAS -->
+@if (peliculasTop().length > 0 && !filtroGenero()) {
+  <div class="top-peliculas-container">
+    <h2 class="titulo-seccion">🔥Las Más Vistas</h2>
+    
+    <div class="grid-top-peliculas">
+      @for (peli of peliculasTop(); track peli.id; let i = $index) {
+        <div class="card-peli-top">
+          <!-- Medalla de posición (Top 1, Top 2...) -->
+          <div class="badge-top">#{{ i + 1 }}</div>
+          
+          <img [src]="peli.poster" [alt]="peli.titulo" class="poster-peli">
+          
+          <div class="info-peli">
+            <h3>{{ peli.titulo }}</h3>
+            <p class="detalle">Duración: {{ peli.duracion_min }} min | {{ peli.clasificacion_edad }}</p>
+            <p class="tickets-badge">🎟️ {{ peli.ticketsVendidos }} entradas vendidas</p>
+            
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}
 <div class="carrusel-wrapper">
   
   <!-- Botón Anterior (-1) -->
@@ -8,44 +32,70 @@
   <div class="carrusel-container" #carrusel>
     
     @for (peli of peliculasFiltradas(); track peli.id) {
-      <div class="peli-card">
-        
-        <!-- Contenedor de la portada -->
-        <div class="poster-container">
-          <img [src]="peli.poster" [alt]="peli.titulo">
-        </div>
-
-        <div class="peli-info">
-          <h3 class="textoCarrusel">{{ peli.titulo }}</h3>
-          <div class="movie-meta">
-           <span class="rating">⭐ {{ peli.puntuacion || "Sin Reseña"}}</span>
-           
-            <button class="btn-ver-opiniones" (click)="abrirOpiniones(peli.titulo, peli.resenas)">
-              
-              <span class="rating">🍿{{ peli.resenas | promedioResenas}}</span>
-            </button>
-           <span class="duracion-badge" class="textoCarrusel">👁 {{ peli.duracion_min | duracionHoras }}</span>
-          </div>
+      @if(peli.proximamente === false){
+        <div class="peli-card">
           
+          <!-- Contenedor de la portada -->
+          <div class="poster-container">
+            <img [src]="peli.poster" [alt]="peli.titulo">
+          </div>
+  
+          <div class="peli-info">
+            <h3 class="textoCarrusel">{{ peli.titulo }} </h3>
+            <div class="movie-meta">
+              <span class="rating">⭐ {{ peli.puntuacion || "Sin Reseña"}}</span>
+              
+              <button class="btn-ver-opiniones" (click)="abrirOpiniones(peli.titulo, peli.resenas)">    
+                <span class="rating">🍿{{ peli.resenas | promedioResenas}}</span>
+              </button>
+
+              
+              <span class="duracion-badge" class="textoCarrusel">👁 {{ peli.duracion_min | duracionHoras }}</span>
+            </div>
+            
+            
             <div class="generos">
               @for (item of peli.generos; track item.genero.nombre) {
                 <span class="badge">{{ item.genero.nombre }}</span>
               }
             </div>
-          <div class="horarios-grid">
-            @for (f of peli.funciones; track f.id) {
-              <!-- Al hacer clic, abre tu modal de la sala de cine -->
-              <button class="btn-horario" (click)="abrirSala(f.id, peli.titulo, f.fecha_hora_inicio, f.precio)">
-                <span>{{ f.fecha_hora_inicio | date:'shortTime' }}</span>
-                <small>{{ f.fecha_hora_inicio | date:"d 'de' MMMM" }}  </small>
-                <small>{{ f.idioma }}</small>
-                <small>{{ f.formato }}</small>
-              </button>
+            <div class="horarios-grid">
+              
+              @for (f of peli.funciones; track f.id) {
+                <!-- Al hacer clic, abre tu modal de la sala de cine -->
+                <button class="btn-horario" (click)="abrirSala(f.id, peli.titulo, f.fecha_hora_inicio, f.precio,f.sala_id)">
+                  <span>{{ f.fecha_hora_inicio | date:'shortTime' }}</span>
+                  <small>{{ f.fecha_hora_inicio | date:"d 'de' MMMM" }}  </small>
+                  <small>{{ f.idioma }}</small>
+                  <small>{{ f.formato }}</small>
+                  <small>Sala: {{ f.sala_id }}</small>
+                </button>
+              }
+            </div>
+            @if (requiereAdulto(peli.clasificacion_edad)) {
+              <div class="leyenda-adultos">
+                <span class="icono-alerta">⚠️</span>
+                <p><strong>Atención (+18):</strong> Los menores de edad deben ingresar estrictamente acompañados por un adulto responsable.</p>
+              </div>
             }
           </div>
+  
         </div>
-
-      </div>
+      }
+      @else {
+        <div class="top-peliculas-container">
+          <h2 class="titulo-seccion">PROXIMAMENTE!</h2>
+            <div class="grid-top-peliculas">
+                <div class="card-peli-top">         
+                  <img [src]="peli.poster" [alt]="peli.titulo" class="poster-peli">           
+                  <div class="info-peli">
+                    <h3>{{ peli.titulo }}</h3>
+                    <p class="detalle">Duración: {{ peli.duracion_min }} min | {{ peli.clasificacion_edad }}</p>
+                  </div>
+                </div>
+            </div>
+        </div>
+      }
     }
 
   </div>
@@ -66,6 +116,7 @@
           [peliculaTitulo]="tituloSeleccionado()"
           [fechaFuncion]="fechaSeleccionada()"
           [precioFuncion]="precioSeleccionado()"
+          [sala_id]="salaIdSeleccionado()!"
           (cerrar)="cerrarSala()">
         </app-sala-cine>
 

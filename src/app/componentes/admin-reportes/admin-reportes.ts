@@ -3,9 +3,10 @@ import { Auth } from '../../servicios/auth';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
+import { RouterLink } from '@angular/router';
 
 @Component({
-  imports: [],
+  imports: [RouterLink],
   selector: 'app-admin-reportes',
   styleUrl: './admin-reportes.css',
   templateUrl: './admin-reportes.html',

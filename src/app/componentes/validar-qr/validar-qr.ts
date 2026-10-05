@@ -1,13 +1,14 @@
 import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule, DatePipe } from '@angular/common';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { Auth } from '../../servicios/auth'; // Asegúrate de que la ruta sea correcta
 import { FormsModule } from '@angular/forms';
+
 
 @Component({
   selector: 'app-validar-qr',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, RouterLink],
   templateUrl: './validar-qr.html',
   styleUrls: ['./validar-qr.css']
 })

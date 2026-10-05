@@ -3,11 +3,12 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { FormsModule } from '@angular/forms';
 import { Auth } from '../../servicios/auth';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-admin-candybar',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, FormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormsModule,RouterLink],
   templateUrl: './admin-candybar.html',
   styleUrls: ['./admin-candybar.css']
 })
@@ -79,8 +80,8 @@ export class AdminCandybar implements OnInit {
       alert(`Precio o Stock actualizado con exito!`);
 
       this.auth.registrarAuditoria(
-        'Modificación de precio para el candyBar', 
-        `Cambió el precio de "${item.nombre}" a $${item.precio}`
+        'Modificación de precio o stock para el candyBar', 
+        `Cambió el precio o stock de "${item.nombre}"`
       );
     }
   }

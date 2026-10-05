@@ -3,7 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Fila, Asiento } from '../../interfaces/sala-asientos';
 import { Auth } from '../../servicios/auth';
 import { CarritoService } from '../../servicios/carrito';
-import { Pelicula } from '../../interfaces/Pelicula';
+
 
 @Component({
   selector: 'app-sala-cine',
@@ -18,6 +18,7 @@ export class SalaCine implements OnInit {
   @Input() peliculaTitulo!: string;
   @Input() fechaFuncion!: string;
   @Input() precioFuncion!: number;
+  @Input() sala_id!: number;
   @Output() cerrar = new EventEmitter<void>(); 
   
   
@@ -114,7 +115,8 @@ export class SalaCine implements OnInit {
       peliculaTitulo: this.peliculaTitulo, // Reemplazar con variable real
       fecha: this.fechaFuncion, // Reemplazar con variable real
       asientos: this.asientosSeleccionados,
-      precioUnitario: this.precioFuncion // Reemplazar con variable real
+      precioUnitario: this.precioFuncion, // Reemplazar con variable real
+      sala_id:this.sala_id
     });
 
     alert('¡Asientos agregados al carrito!');

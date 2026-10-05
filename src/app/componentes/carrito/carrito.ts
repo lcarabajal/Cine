@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { CarritoService } from '../../servicios/carrito';
 import { Auth } from '../../servicios/auth';
@@ -12,10 +12,59 @@ import * as QRCode from 'qrcode'; // Generador de QR
   templateUrl: './carrito.html',
   styleUrls: ['./carrito.css']
 })
-export class Carrito {
+export class Carrito implements OnInit {
+
   carritoSvc = inject(CarritoService);
   private auth = inject(Auth);
   
+  puntosDisponibles = signal<number>(0);
+  puntosAUsar = signal<number>(0);
+  mostrarModalPuntos = signal<boolean>(false);
+  
+  // Variables temporales para el modal
+  totalOriginal = signal<number>(0);
+  totalConDescuento = signal<number>(0);
+  noQuiere = signal<boolean>(false);
+
+  ngOnInit(): void {
+    this.cargarPuntosUsuario();
+  }
+
+  iniciarCheckout() {
+    const totalActual = this.carritoSvc.granTotal(); 
+    
+    this.totalOriginal.set(totalActual);
+
+    // Si tiene puntos, mostramos el modal. Si no, pasamos directo al pago final.
+    if (this.puntosDisponibles() > 0) {
+      this.puntosAUsar.set(0); // Reiniciamos a 0 por defecto
+      this.totalConDescuento.set(totalActual);
+      this.mostrarModalPuntos.set(true);
+    } else {
+      this.finalizarCompra();
+    }
+  }
+
+  async cargarPuntosUsuario() {
+    const userId = await this.auth.getId(); // Obtenemos el ID del usuario logueado
+    if (!userId) return;
+
+    const { data, error } = await this.auth.supabase
+      .from('datosRegistrados')
+      .select('puntos')
+      .eq('id', userId) 
+      .single();
+
+    if (data && data.puntos) {
+      this.puntosDisponibles.set(data.puntos);
+    }
+  }
+
+  rechazar() {
+    this.noQuiere.set(true);
+    this.mostrarModalPuntos.set(false);
+  }
+
   async finalizarCompra() {
     const usuarioId = await this.auth.getId().catch(()=> 0) || 0;
     const tickets = this.carritoSvc.tickets();
@@ -62,22 +111,52 @@ export class Carrito {
         if (errCandy) throw new Error('Error en candy bar');
       }
 
-      // 3. Sistema de Puntos (Solo si el usuario inició sesión)
-      if (usuarioId) {
-        // Obtenemos sus puntos actuales
-        const { data: usuarioData } = await this.auth.supabase
-          .from('datosRegistrados')
-          .select('puntos')
-          .eq('id', usuarioId)
-          .single();
+      if(this.noQuiere()){
+        // 3. Sistema de Puntos (Solo si el usuario inició sesión)
+        if (usuarioId) {
+          // Obtenemos sus puntos actuales
+          const { data: usuarioData } = await this.auth.supabase
+            .from('datosRegistrados')
+            .select('puntos')
+            .eq('id', usuarioId)
+            .single();
+  
+          const puntosActuales = usuarioData?.puntos || 0;  
+  
+          // Sumamos lo gastado
+          await this.auth.supabase
+            .from('datosRegistrados')
+            .update({ puntos: puntosActuales + granTotal })
+            .eq('id', usuarioId);
+        }
+      }else{
+        const userId = await this.auth.getId();
+        console.log(`Procesando pago por $${this.totalConDescuento()} usando ${this.puntosAUsar()} puntos.`);
 
-        const puntosActuales = usuarioData?.puntos || 0;
+        // --- DESCONTAR LOS PUNTOS AL USUARIO ---
+        if (this.puntosAUsar() > 0) {
+          const puntosRestantes = this.puntosDisponibles() - this.puntosAUsar();
+          
+          const { error } = await this.auth.supabase
+            .from('datosRegistrados')
+            .update({ puntos: puntosRestantes })
+            .eq('id', userId);
 
-        // Sumamos lo gastado
-        await this.auth.supabase
-          .from('datosRegistrados')
-          .update({ puntos: puntosActuales + granTotal })
-          .eq('id', usuarioId);
+          if (!error) {
+            this.puntosDisponibles.set(puntosRestantes); // Actualizamos la vista
+          }
+        }else{
+          const puntosRestantes = this.puntosDisponibles() 
+          
+          const { error } = await this.auth.supabase
+            .from('datosRegistrados')
+            .update({ puntos: puntosRestantes + granTotal })
+            .eq('id', userId);
+
+          if (!error) {
+            this.puntosDisponibles.set(puntosRestantes); // Actualizamos la vista
+          }
+        }
       }
 
       // 4. Generar y descargar el PDF
@@ -85,12 +164,60 @@ export class Carrito {
 
       alert('¡Compra exitosa! Se sumaron puntos a tu cuenta y tu PDF se está descargando.');
       this.carritoSvc.vaciarCarrito();
-      
+      this.mostrarModalPuntos.set(false);
+      this.noQuiere.set(false);
+      this.cargarPuntosUsuario();
     } catch (error) {
       alert('Hubo un problema procesando tu compra.');
     }
   }
 
+  // async procesarPagoFinal() {
+  //   const userId = await this.auth.getId();
+    
+  //   // --- AQUÍ VA TU LÓGICA ORIGINAL DE COMPRA ---
+  //   // (Insertar en historial_funciones, historial_candybar, etc.)
+  //   console.log(`Procesando pago por $${this.totalConDescuento()} usando ${this.puntosAUsar()} puntos.`);
+
+  //   // --- DESCONTAR LOS PUNTOS AL USUARIO ---
+  //   if (this.puntosAUsar() > 0) {
+  //     const puntosRestantes = this.puntosDisponibles() - this.puntosAUsar();
+      
+  //     const { error } = await this.auth.supabase
+  //       .from('datosRegistrados')
+  //       .update({ puntos: puntosRestantes })
+  //       .eq('id', userId);
+
+  //     if (!error) {
+  //       this.puntosDisponibles.set(puntosRestantes); // Actualizamos la vista
+  //     }
+  //   }
+
+  //   alert('¡Compra realizada con éxito!');
+    
+  //   // this.vaciarCarrito(); // Limpiar el carrito después de comprar
+  // }
+
+  actualizarDescuento(event: Event) {
+    const input = event.target as HTMLInputElement;
+    let cantidadPuntos = Number(input.value);
+
+    // Evitamos números negativos
+    if (cantidadPuntos < 0) cantidadPuntos = 0;
+
+    // No puede usar más puntos de los que tiene
+    if (cantidadPuntos > this.puntosDisponibles()) {
+      cantidadPuntos = this.puntosDisponibles();
+    }
+
+    // No puede usar más puntos que el valor total de la compra (evitar total negativo)
+    if (cantidadPuntos > this.totalOriginal()) {
+      cantidadPuntos = this.totalOriginal();
+    }
+
+    this.puntosAUsar.set(cantidadPuntos);
+    this.totalConDescuento.set(this.totalOriginal() - cantidadPuntos);
+  }
   // --- GENERADOR DE PDF ---
   async generarReciboPDF(tickets: any[], reservas: any[], candy: any[], qrCandy: string | null) {
     console.log("Esto es el generarPDF y estos son los tickets: ");
@@ -126,14 +253,12 @@ export class Carrito {
       
       doc.setFontSize(14);
       doc.setTextColor(0, 0, 0);
-      doc.text(`Asiento: ${reserva.codigo_asiento}`, 20, posicionY + 24);
+      doc.text(`Sala: ${ticketInfo.sala_id}`, 20, posicionY + 24);
+    
+      doc.text(`Asiento: ${reserva.codigo_asiento}`, 20, posicionY + 29);
 
-      doc.setFontSize(14);
-      doc.setTextColor(0, 0, 0);
       doc.text(`Precio unitario: $${ticketInfo.precioUnitario}`, 20, posicionY + 36);
 
-      doc.setFontSize(14);
-      doc.setTextColor(0, 0, 0);
       doc.text(`Codigo: ${reserva.codigo_qr}`, 20, posicionY + 45);
 
 

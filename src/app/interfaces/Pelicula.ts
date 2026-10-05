@@ -6,6 +6,8 @@ export interface Pelicula {
   puntuacion: string;
   poster: string;
   clasificacion_edad:string;
+  ticketsVendidos: number;
+  proximamente:boolean;
   generos: {
     genero: { nombre: string }
   }[];

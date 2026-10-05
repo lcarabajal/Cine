@@ -1,3 +1,8 @@
+<nav class="navbar">
+    <div class="btn-navbar">               
+        <button class="btn btn-light rounded-pill px-3" routerLink="/home">Volver</button>  
+    </div>
+</nav>
 <div class="dashboard-container">
   <div class="header">
     <h2>Panel de Control</h2>
@@ -9,7 +14,7 @@
     <a class="btn-cuadrado" routerLink="/adminPeliculas">
       <span class="icono">🎬</span>
       <h3>Películas</h3>
-      <p>Agregar</p>
+      <p>Agregar peliculas</p>
     </a>
 
     <!-- Botón Funciones -->
@@ -23,14 +28,23 @@
       <span class="icono">🍫</span>
       <h3>Candy Bar</h3>
       <p>Gestión de combos y precios Candy Bar</p>
-    </a>
+    </a> 
+  </div>
 
+  <br>
+
+  <div class="botones-grid">
     <a class="btn-cuadrado" routerLink="/admin/validar-qr">
       <span class="icono">🔍</span>
       <h3>Validar Entrada</h3>
       <p>Ingreso manual o por escáner</p>
     </a>
-
+    <a class="btn-cuadrado" routerLink="/adminHistorial">
+      <span class="icono">👨‍💻</span>
+      <h3 style="font-size: medium;">Historial actividades</h3>
+      <p>Revisar las actividades de los administradores</p>
+    </a>
+    
     <a class="btn-cuadrado" routerLink="/adminReportes">
       <span class="icono">📊</span>
       <h3>Estadisticas</h3>

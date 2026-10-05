@@ -3,7 +3,7 @@
     display: flex;
     align-items: center;
     padding: 1rem 2rem;
-    background-color: rgb(43, 98, 201);
+    background-color: rgba(22, 37, 122, 0.39);
     
 }
 
@@ -13,10 +13,23 @@
     gap: 1rem;
 }
 
+@font-face {
+  font-family: 'RetroBlendy' ; 
+  src: url('assets/fonts/RetroBlendy.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
 
+*{
+    font-family: 'RetroBlendy', sans-serif !important;
+}
 body {
-  background-color: #020617; /* Fondo oscuro global */
-  color: #f8fafc; /* Texto claro por defecto */
+  background-color: #020617; 
+  color: #f8fafc; 
   margin: 0;
   min-height: 100vh;
+}
+
+input, button, select, textarea {
+  font-family: inherit;
 }

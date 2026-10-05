@@ -1,0 +1,53 @@
+<nav class="navbar">
+    <div class="btn-navbar">               
+        <button class="btn btn-dark rounded-pill px-3" routerLink="/admin">Volver</button>  
+    </div>
+</nav>
+<div class="log-container">
+  
+  <div class="header">
+    <h2>Registro de Auditoría 🛡️</h2>
+    <p>Historial de acciones sensibles realizadas en el sistema.</p>
+  </div>
+
+  <div class="tabla-container">
+    <table class="tabla-logs">
+      <thead>
+        <tr>
+          <th>Fecha y Hora</th>
+          <th>ID Usuario</th>
+          <th>Acción</th>
+          <th>Detalles del evento</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Iteramos el historial -->
+        @for (log of logs(); track log.id) {
+          <tr>
+            <!-- Formateamos la fecha (ej: 05/10/2026 14:30:00) -->
+            <td class="fecha">{{ log.fecha_hora | date:'dd/MM/yyyy HH:mm:ss' }}</td>
+            
+            <!-- Mostramos solo los primeros 8 caracteres del UUID -->
+            <td class="usuario" title="ID completo: {{ log.id_usuario }}">
+              {{ log.id_usuario }}
+            </td>
+            
+            <!-- Etiqueta de color dinámico -->
+            <td>
+              <span class="badge" [ngClass]="obtenerClaseAccion(log.accion)">
+                {{ log.accion }}
+              </span>
+            </td>
+            
+            <td class="detalles">{{ log.detalles }}</td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4" class="texto-vacio">No hay registros de auditoría aún.</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  
+</div>
