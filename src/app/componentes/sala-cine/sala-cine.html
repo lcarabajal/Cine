@@ -35,14 +35,26 @@
         <!-- Columna Central (10) -->
         <div class="bloque-asientos">
           @for (asiento of fila.bloqueCentro; track asiento.id) {
-            <button 
-              class="asiento" 
-              [class.seleccionado]="asiento.seleccionado"
-              [class.ocupado]="asiento.ocupado"
-              (click)="toggleSeleccion(asiento)"
-              [title]="'Asiento ' + asiento.id">
-              {{ asiento.numero }}
-            </button>
+            @if(fila.letra == 'H'+ asiento.id|| fila.letra === 'I'+ asiento.id ){
+              <button 
+                class="asiento.especial" 
+                [class.seleccionado]="asiento.seleccionado"
+                [class.ocupado]="asiento.ocupado"
+                (click)="toggleSeleccion(asiento)"
+                [title]="'Asiento ' + asiento.id">
+                {{ asiento.numero }}
+              </button>
+            }
+            @else {
+              <button 
+                class="asiento" 
+                [class.seleccionado]="asiento.seleccionado"
+                [class.ocupado]="asiento.ocupado"
+                (click)="toggleSeleccion(asiento)"
+                [title]="'Asiento ' + asiento.id">
+                {{ asiento.numero }}
+              </button>
+            }
           }
         </div>
 

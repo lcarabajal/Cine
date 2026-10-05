@@ -54,14 +54,14 @@ export class SalaCine implements OnInit {
   //Generar la sala (Modificado para revisar si está ocupado en la BD)
   generarSala(): void {
     //Divide la cadena en subcadenas y las devuelve como array
-    const letras = 'ABCDEFGHIJKLMNOPQRST'.split('');
+    const letras = 'ABCDEFGHIJKLMNOPQR'.split('');
 
     const filasGeneradas = letras.map((letra) => {
       let tipoColor: 'normal' | 'azul' | 'amarillo' = 'normal';
       //H, I mepa que tienen que volar J y k se unifican 
       //
-      if (['H', 'I', 'J', 'K'].includes(letra)) tipoColor = 'azul';
-      else if (['R', 'S', 'T'].includes(letra)) tipoColor = 'amarillo';
+      if (['H', 'I'].includes(letra)) tipoColor = 'azul';
+      else if (['R', 'Q', 'P'].includes(letra)) tipoColor = 'amarillo';
 
       let contadorAsientos = 1;
       const crearBloque = (cantidad: number): Asiento[] => {
