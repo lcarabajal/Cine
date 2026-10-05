@@ -49,8 +49,8 @@ Esta es una aplicación web diseñada para ofrecer una experiencia de usuario fl
  **Compras Gratuitas:** Si el saldo de puntos es suficiente, el usuario puede cubrir el 100% de la compra y llevarse sus entradas y combos completamente gratis.
 
 ### 7. 🎟️ Tickets Digitales (PDF y Códigos QR)
+<img width="802" height="452" alt="6" src="https://github.com/user-attachments/assets/80c62d24-a5af-498a-99e7-bd2e0d4b6ca1" />
 
-<img width="802" height="492" alt="6" src="https://github.com/user-attachments/assets/111b16a6-3a11-40c4-bb95-802bb5c971ad" />
 <img width="788" height="407" alt="7" src="https://github.com/user-attachments/assets/e67d29d5-c85c-4722-8ba5-db81b398d59e" />
 
  **Generación Automática:** Tras confirmar la compra, el sistema genera recibos digitales en formato PDF.
